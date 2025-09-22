@@ -14,6 +14,29 @@ const router = createRouter({
                     component: () => import('@/views/Dashboard.vue')
                 },
                 {
+                    path: '/inventory',
+                    name: 'Inventory',
+                    component: () => import('@/views/pages/Inventory/InventoryLayout.vue'),
+                    children: [
+                      {
+                        path: 'add',
+                        name: 'AddInventoryItem',
+                        component: () => import('@/views/pages/Inventory/AddInventory.vue')
+                      },
+                      {
+                        path: 'list',
+                        name: 'InventoryList',
+                        component: () => import('@/views/pages/Inventory/ViewInventory.vue')
+                      },
+                      {
+                        path: 'Newitem',
+                        name: 'NewItemInInventory',
+                        component: () => import('@/views/pages/Inventory/AddNewItemInInventory.vue')
+                      }
+                    ]
+                  },
+                  
+                {
                     path: '/uikit/formlayout',
                     name: 'formlayout',
                     component: () => import('@/views/uikit/FormLayout.vue')
