@@ -1,58 +1,68 @@
 <template>
   <div class="card p-4" style="max-width: 900px; margin: auto">
     <h3 class="mb-4 text-center">Add New Inventory Item</h3>
-   <div class="Multi-column"> 
-    <div class="formgrid grid">
+
+    <!-- Table-like layout -->
+    <div class="form-table">
       <!-- Row 1 -->
-      <div class="field col-12 md:col-6">
-        <label for="name">Item Name</label>
-        <InputText id="name" v-model="newItem.name" placeholder="Enter item name" class="w-full" />
-      </div>
-      <div class="field col-12 md:col-6">
-        <label for="category">Category</label>
-        <Dropdown id="category" v-model="newItem.category" :options="categories" placeholder="Select category" class="w-full" />
+      <div class="form-row">
+        <div class="form-cell">
+          <label for="name">Item Name</label>
+          <InputText id="name" v-model="newItem.name" placeholder="Enter item name" class="w-full" />
+        </div>
+        <div class="form-cell">
+          <label for="category">Category</label>
+          <Dropdown id="category" v-model="newItem.category" :options="categories" placeholder="Select category" class="w-full" />
+        </div>
       </div>
 
       <!-- Row 2 -->
-      <div class="field col-12 md:col-6">
-        <label for="quantity">Quantity</label>
-        <InputNumber id="quantity" v-model="newItem.quantity" :min="0" class="w-full" />
-      </div>
-      <div class="field col-12 md:col-6">
-        <label for="price">Price</label>
-        <InputNumber id="price" v-model="newItem.price" mode="currency" currency="USD" class="w-full" />
+      <div class="form-row">
+        <div class="form-cell">
+          <label for="quantity">Quantity</label>
+          <InputNumber id="quantity" v-model="newItem.quantity" :min="0" class="w-full" />
+        </div>
+        <div class="form-cell">
+          <label for="price">Price</label>
+          <InputNumber id="price" v-model="newItem.price" mode="currency" currency="USD" class="w-full" />
+        </div>
       </div>
 
       <!-- Row 3 -->
-      <div class="field col-12 md:col-6">
-        <label for="unit">Unit</label>
-        <Dropdown id="unit" v-model="newItem.unit" :options="units" placeholder="Select unit" class="w-full" />
-      </div>
-      <div class="field col-12 md:col-6">
-        <label for="supplier">Supplier</label>
-        <Dropdown id="supplier" v-model="newItem.supplier" :options="suppliers" placeholder="Select supplier" class="w-full" />
+      <div class="form-row">
+        <div class="form-cell">
+          <label for="unit">Unit</label>
+          <Dropdown id="unit" v-model="newItem.unit" :options="units" placeholder="Select unit" class="w-full" />
+        </div>
+        <div class="form-cell">
+          <label for="supplier">Supplier</label>
+          <Dropdown id="supplier" v-model="newItem.supplier" :options="suppliers" placeholder="Select supplier" class="w-full" />
+        </div>
       </div>
 
       <!-- Row 4 -->
-      <div class="field col-12 md:col-6">
-        <label for="expiry">Expiry Date</label>
-        <Calendar id="expiry" v-model="newItem.expiryDate" dateFormat="yy-mm-dd" showIcon class="w-full" />
-      </div>
-      <div class="field col-12 md:col-6">
-        <label for="reorder">Reorder Level</label>
-        <InputNumber id="reorder" v-model="newItem.reorderLevel" :min="0" class="w-full" />
+      <div class="form-row">
+        <div class="form-cell">
+          <label for="expiry">Expiry Date</label>
+          <Calendar id="expiry" v-model="newItem.expiryDate" dateFormat="yy-mm-dd" showIcon class="w-full" />
+        </div>
+        <div class="form-cell">
+          <label for="reorder">Reorder Level</label>
+          <InputNumber id="reorder" v-model="newItem.reorderLevel" :min="0" class="w-full" />
+        </div>
       </div>
 
       <!-- Row 5 -->
-      <div class="field col-12 md:col-6">
-        <label for="barcode">Barcode</label>
-        <InputText id="barcode" v-model="newItem.barcode" placeholder="Enter barcode" class="w-full" />
+      <div class="form-row">
+        <div class="form-cell">
+          <label for="barcode">Barcode</label>
+          <InputText id="barcode" v-model="newItem.barcode" placeholder="Enter barcode" class="w-full" />
+        </div>
+        <div class="form-cell">
+          <label for="location">Storage Location</label>
+          <InputText id="location" v-model="newItem.location" placeholder="Enter location" class="w-full" />
+        </div>
       </div>
-      <div class="field col-12 md:col-6">
-        <label for="location">Storage Location</label>
-        <InputText id="location" v-model="newItem.location" placeholder="Enter location" class="w-full" />
-      </div>
-    </div>
     </div>
 
     <!-- Submit -->
@@ -91,9 +101,25 @@ const saveItem = () => {
   console.log('New item added:', newItem.value);
 };
 </script>
+
 <style scoped>
-.Multi-column{
-    display:flex;
-    flex-
+.form-table {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 16px 12px; /* spacing between cells */
+}
+.form-row {
+  display: table-row;
+}
+.form-cell {
+  display: table-cell;
+  vertical-align: top;
+  width: 50%;
+}
+.form-cell label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
 }
 </style>
