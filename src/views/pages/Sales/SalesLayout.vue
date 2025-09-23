@@ -7,9 +7,13 @@
       <Button label="Add New Item" @click="$router.push('/sales/NewItem')" />
     </div>
     <router-view />
+    <div>
+      <RevenueStreamWidget />
+    </div>
   </div>
 </template>
 
 <script setup>
 import Button  from 'primevue/button';
+import RevenueStreamWidget from '@/components/dashboard/RevenueStreamWidget.vue';
 </script>

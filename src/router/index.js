@@ -44,6 +44,11 @@ const router = createRouter({
                             path: 'Newitem',
                             name: 'NewItemInInventory',
                             component: () => import('@/views/pages/Inventory/AddNewItemInInventory.vue')
+                        },
+                        {
+                            path: 'UpdateItem',
+                            name: 'UpdateItemInInventory',
+                            component: () => import('@/views/pages/Inventory/UpdateInventory.vue')
                         }
                     ]
                 },
