@@ -13,33 +13,55 @@ const router = createRouter({
                     name: 'dashboard',
                     component: () => import('@/views/Dashboard.vue')
                 },
+
+                {
+                    path: '/analytics',
+                    name: 'Analytics',
+                    component: () => import('@/views/pages/Analytics/AnalyticsLayout.vue')
+                },
+
+                {
+                    path: '/statistics',
+                    name: 'Statistics',
+                    component: () => import('@/views/pages/Statistics/StatisticsLayout.vue')
+                },
                 {
                     path: '/inventory',
                     name: 'Inventory',
                     component: () => import('@/views/pages/Inventory/InventoryLayout.vue'),
                     children: [
-                      {
-                        path: 'add',
-                        name: 'AddInventoryItem',
-                        component: () => import('@/views/pages/Inventory/AddInventory.vue')
-                      },
-                      {
-                        path: 'list',
-                        name: 'InventoryList',
-                        component: () => import('@/views/pages/Inventory/ViewInventory.vue')
-                      },
-                      {
-                        path: 'Newitem',
-                        name: 'NewItemInInventory',
-                        component: () => import('@/views/pages/Inventory/AddNewItemInInventory.vue')
-                      }
+                        {
+                            path: 'add',
+                            name: 'AddInventoryItem',
+                            component: () => import('@/views/pages/Inventory/AddInventory.vue')
+                        },
+                        {
+                            path: 'list',
+                            name: 'InventoryList',
+                            component: () => import('@/views/pages/Inventory/ViewInventory.vue')
+                        },
+                        {
+                            path: 'Newitem',
+                            name: 'NewItemInInventory',
+                            component: () => import('@/views/pages/Inventory/AddNewItemInInventory.vue')
+                        }
                     ]
-                  },
-                  
+                },
+
                 {
-                    path: '/uikit/formlayout',
-                    name: 'formlayout',
-                    component: () => import('@/views/uikit/FormLayout.vue')
+                    path: '/menu',
+                    name: 'Menu',
+                    component: () => import('@/views/pages/Menu/MenuLayout.vue')
+                },
+                {
+                    path: '/sales',
+                    name: 'Sales',
+                    component: () => import('@/views/pages/Sales/SalesLayout.vue')
+                },
+                {
+                    path: '/pos',
+                    name: 'Pos',
+                    component: () => import('@/views/pages/POS/PosLayout.vue')
                 },
                 {
                     path: '/uikit/input',

@@ -1,5 +1,5 @@
 <template>
-  <div class="card p-4" style="max-width: 900px; margin: auto">
+  <div class="card p-4" style="max-width: 100%; margin: auto">
     <h3 class="mb-4 text-center">Add New Inventory Item</h3>
 
     <!-- Table-like layout -->
