@@ -1,25 +1,38 @@
 import { useToast } from 'primevue/usetoast';
-const toast = useToast();
-const showSuccess = () => {
-    toast.add({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-};
 
-const showInfo = () => {
-    toast.add({ severity: 'info', summary: 'Info Message', detail: 'Message Content', life: 3000 });
-};
+export const useToastHelpers = () => {
+    const toast = useToast();
 
-const showWarn = () => {
-    toast.add({ severity: 'warn', summary: 'Warn Message', detail: 'Message Content', life: 3000 });
-};
+    const showSuccess = (summary = 'Success', detail = 'Operation completed successfully') => {
+        toast.add({ severity: 'success', summary, detail, life: 3000 });
+    };
 
-const showError = () => {
-    toast.add({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-};
+    const showInfo = (summary = 'Info', detail = 'Information message') => {
+        toast.add({ severity: 'info', summary, detail, life: 3000 });
+    };
 
-const showSecondary = () => {
-    toast.add({ severity: 'secondary', summary: 'Secondary Message', detail: 'Message Content', life: 3000 });
-};
+    const showWarn = (summary = 'Warning', detail = 'Warning message') => {
+        toast.add({ severity: 'warn', summary, detail, life: 3000 });
+    };
 
-const showContrast = () => {
-    toast.add({ severity: 'contrast', summary: 'Contrast Message', detail: 'Message Content', life: 3000 });
+    const showError = (summary = 'Error', detail = 'An error occurred') => {
+        toast.add({ severity: 'error', summary, detail, life: 3000 });
+    };
+
+    const showSecondary = (summary = 'Note', detail = 'Secondary message') => {
+        toast.add({ severity: 'secondary', summary, detail, life: 3000 });
+    };
+
+    const showContrast = (summary = 'Notice', detail = 'Contrast message') => {
+        toast.add({ severity: 'contrast', summary, detail, life: 3000 });
+    };
+
+    return {
+        showSuccess,
+        showInfo,
+        showWarn,
+        showError,
+        showSecondary,
+        showContrast
+    };
 };

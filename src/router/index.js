@@ -1,5 +1,6 @@
 import AppLayout from '@/layout/AppLayout.vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import { createAuthGuard } from './guards';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -17,13 +18,15 @@ const router = createRouter({
                 {
                     path: '/analytics',
                     name: 'Analytics',
-                    component: () => import('@/views/pages/Analytics/AnalyticsLayout.vue')
+                    component: () => import('@/views/pages/Analytics/AnalyticsLayout.vue'),
+                    meta: { roles: ['admin', 'manager'] }
                 },
 
                 {
                     path: '/statistics',
                     name: 'Statistics',
-                    component: () => import('@/views/pages/Statistics/StatisticsLayout.vue')
+                    component: () => import('@/views/pages/Statistics/StatisticsLayout.vue'),
+                    meta: { roles: ['admin', 'manager'] }
                 },
                 {
                     path: '/inventory',
@@ -153,6 +156,65 @@ const router = createRouter({
                     path: '/documentation',
                     name: 'documentation',
                     component: () => import('@/views/pages/Documentation.vue')
+                },
+                {
+                    path: '/profile',
+                    name: 'profile',
+                    component: () => import('@/views/pages/profile/UserProfile.vue')
+                },
+                {
+                    path: '/tables',
+                    name: 'tables',
+                    component: () => import('@/views/pages/tables/TableManagement.vue'),
+                    meta: { roles: ['admin', 'manager', 'waiter'] }
+                },
+                {
+                    path: '/orders/management',
+                    name: 'order-management',
+                    component: () => import('@/views/pages/orders/OrderManagement.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'waiter', 'cashier'] }
+                },
+                {
+                    path: '/menu',
+                    name: 'menu-management',
+                    component: () => import('@/views/pages/Menu/MenuManagement.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                },
+                {
+                    path: '/kitchen',
+                    name: 'kitchen-display',
+                    component: () => import('@/views/pages/kitchen/KitchenDisplay.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'kitchen'] }
+                },
+                {
+                    path: '/billing',
+                    name: 'billing-payment',
+                    component: () => import('@/views/pages/billing/BillingPayment.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'cashier'] }
+                },
+                {
+                    path: '/inventory-management',
+                    name: 'inventory-management',
+                    component: () => import('@/views/InventoryManagement.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                },
+                {
+                    path: '/reports-analytics',
+                    name: 'reports-analytics',
+                    component: () => import('@/views/ReportsAnalytics.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                },
+                {
+                    path: '/admin-settings',
+                    name: 'admin-settings',
+                    component: () => import('@/views/AdminSettings.vue'),
+                    meta: { requiresAuth: true, roles: ['admin'] }
+                },
+                {
+                    path: '/orders/new/:tableId?',
+                    name: 'newOrder',
+                    component: () => import('@/views/pages/orders/NewOrder.vue'),
+                    meta: { roles: ['admin', 'manager', 'waiter'] }
                 }
             ]
         },
@@ -184,5 +246,8 @@ const router = createRouter({
         }
     ]
 });
+
+// Add global authentication guard
+router.beforeEach(createAuthGuard());
 
 export default router;

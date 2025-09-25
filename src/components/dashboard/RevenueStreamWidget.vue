@@ -103,18 +103,10 @@ onMounted(() => {
 
             <div class="flex gap-3">
                 <!-- Range Selector -->
-                <Dropdown
-                    v-model="selectedRange"
-                    :options="['1 Day', '1 Week', '1 Month']"
-                    class="w-40"
-                />
+                <Dropdown v-model="selectedRange" :options="['1 Day', '1 Week', '1 Month']" class="w-40" />
 
                 <!-- Branch Selector -->
-                <Dropdown
-                    v-model="selectedBranch"
-                    :options="['Lahore Branch', 'Islamabad Branch', 'Karachi Branch']"
-                    class="w-48"
-                />
+                <Dropdown v-model="selectedBranch" :options="['Lahore Branch', 'Islamabad Branch', 'Karachi Branch']" class="w-48" />
             </div>
         </div>
 
