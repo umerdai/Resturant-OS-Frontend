@@ -10,6 +10,8 @@ import Button from 'primevue/button';
 import Card from 'primevue/card';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import { useToast } from 'primevue/usetoast';
+
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import '@/assets/styles.scss';

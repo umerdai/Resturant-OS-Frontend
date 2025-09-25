@@ -44,7 +44,7 @@ const branches = ref([
 
 <style scoped>
 .card {
-  background: #fff;
+  background: var(--surface-card);;
   border-radius: 12px;
 }
 </style>

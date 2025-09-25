@@ -2,6 +2,9 @@
   <div class="card">
     <h3 class="mb-3">Update Inventory</h3>
 
+    <!-- ✅ Toast Component -->
+    <Toast />
+
     <DataTable :value="products" tableStyle="min-width: 50rem">
       <!-- Item Name -->
       <Column field="name" header="Item Name">
@@ -50,16 +53,26 @@ import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Button from 'primevue/button'
+import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
 import { ProductService } from '@/service/ProductService'
 
 const products = ref([])
+const toast = useToast()
+const showSuccess = () => {
+    toast.add({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+};
 
 onMounted(() => {
   ProductService.getProductsMini().then((data) => (products.value = data))
 })
 
 const saveUpdates = () => {
-  console.log('Updated Products:', products.value)
-  // 🔹 Call API here to save updated values
+  try {
+    console.log('Updated Products:', products.value)
+    showSuccess()
+  } catch (e) {
+    toast.add({ severity: 'error', summary: 'Error Message', detail: 'Error Content', life: 3000 });
+  }
 }
 </script>
