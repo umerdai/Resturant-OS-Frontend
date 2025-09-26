@@ -1,3 +1,21 @@
+<script setup>
+import { ref } from 'vue';
+import { useLayout } from '@/layout/composables/layout';
+import AppConfigurator from './AppConfigurator.vue';
+import Popover from 'primevue/popover';
+
+const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
+
+// Example user data (replace with real auth/store later)
+const username = ref('John Doe');
+const role = ref('Inventory Manager');
+const branch = ref('F-7 Branch');
+
+const popoverRef = ref(null);
+const togglePopover = (event) => {
+    popoverRef.value.toggle(event);
+};
+</script>
 <template>
     <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
@@ -61,50 +79,26 @@
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button>
-                   <button type="button" class="layout-topbar-action" @click="togglePopover($event)">
-        <i class="pi pi-user"></i>
-      </button>
+                    <button type="button" class="layout-topbar-action" @click="togglePopover($event)">
+                        <i class="pi pi-user"></i>
+                    </button>
 
-      <!-- Popover -->
-      <Popover ref="popoverRef">
-        <div class="p-3 text-center">
-          <div class="font-bold text-lg">
-            <i class="pi pi-user mr-2"></i>{{ username }}
-          </div>
-          <div class="text-sm text-gray-600 mt-2">
-            <i class="pi pi-briefcase mr-2"></i>{{ role }}
-          </div>
-          <div class="text-sm text-gray-600 mt-1">
-            <i class="pi pi-building mr-2"></i>{{ branch }}
-          </div>
-        </div>
-      </Popover>
+                    <!-- Popover -->
+                    <Popover ref="popoverRef">
+                        <div class="p-3 text-center">
+                            <div class="font-bold text-lg"><i class="pi pi-user mr-2"></i>{{ username }}</div>
+                            <div class="text-sm text-gray-600 mt-2"><i class="pi pi-briefcase mr-2"></i>{{ role }}</div>
+                            <div class="text-sm text-gray-600 mt-1"><i class="pi pi-building mr-2"></i>{{ branch }}</div>
+                        </div>
+                    </Popover>
                 </div>
             </div>
         </div>
     </div>
 </template>
-<script setup>
-import { ref } from 'vue'
-import { useLayout } from '@/layout/composables/layout'
-import AppConfigurator from './AppConfigurator.vue'
-import Popover from 'primevue/popover'
-
-const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout()
-
-// Example user data (replace with real auth/store later)
-const username = ref('John Doe')
-const role = ref('Inventory Manager')
-const branch = ref('F-7 Branch')
-
-const popoverRef = ref(null)
-const togglePopover = (event) => {
-  popoverRef.value.toggle(event)
-}
-</script>
 
 <style scoped>
 .layout-topbar-action {
-  cursor: pointer;
+    cursor: pointer;
 }
 </style>
