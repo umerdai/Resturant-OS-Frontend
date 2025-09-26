@@ -244,6 +244,7 @@ export const useAuthStore = defineStore('auth', () => {
         updateProfile,
         changePassword,
         toggleShiftStatus,
-        initializeAuth
+        initializeAuth,
+        hasPermission
     };
 });
