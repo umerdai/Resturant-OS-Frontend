@@ -1,0 +1,47 @@
+Branch Performance Gap
+
+“Lahore branch revenue was 12% lower than Karachi this week. Avg ticket size in Lahore dropped to PKR 820 vs PKR 960 in Karachi, largely due to higher discount usage (18% vs 5%).”
+
+Menu Item Profitability
+
+“Chicken Biryani generated PKR 450,000 sales but only 8% margin due to high rice waste. Meanwhile, BBQ Platter had 22% margin and should be promoted more.”
+
+Stockout Impact
+
+“Beef Burgers were out of stock for 6 hours on Friday, costing an estimated PKR 75,000 in lost sales (15% of daily revenue).”
+
+Staff Productivity
+
+“Waiter A averaged PKR 6,800 sales/shift vs team avg of PKR 4,200. Staff B consistently lags at PKR 2,500, affecting branch performance.”
+
+Customer Retention
+
+“Only 32% of customers in Islamabad returned this month vs 45% in Karachi. Repeat customers spend 2.4x more on average.”
+
+Delivery Performance
+
+“Average delivery time increased by 6 minutes in Lahore, leading to 18% higher refund/complaint rate. Main cause: insufficient riders during peak hours.”
+
+Promotion Effectiveness
+
+“Buy-1-Get-1 Pizza increased sales by 38% but reduced profit margin by 14%. Happy Hour cocktails, on the other hand, boosted bar sales 22% with only 3% margin loss.”
+
+Waste Cost Analysis
+
+“Total waste this month: PKR 120,000 (4% of COGS). 60% due to expired chicken, 25% due to cancelled orders, 15% prep errors. Spoilage is the biggest driver.”
+
+Table Turnover Rate
+
+“Lahore tables turned over 2.1x per night vs Karachi 3.4x. Slow service times reduced seating capacity utilization by 38%.”
+
+Menu Engineering
+
+“Grilled Fish is a ‘Star’ item (high sales + high margin). Chicken Karahi is a ‘Plowhorse’ (high sales, low margin). Shrimp Pasta is a ‘Dog’ (low sales + low margin) and should be reconsidered.”
+
+Branch Ranking Leaderboard
+
+“This week’s best branch: Karachi (PKR 2.3M revenue, 24% margin). Worst branch: Multan (PKR 1.2M revenue, 12% margin, 18% waste).”
+
+Customer Feedback Sentiment
+
+“Top complaints in Lahore: ‘long delivery times’ (35%), ‘cold food’ (20%), and ‘wrong orders’ (12%). Karachi’s feedback was more positive (72% positive vs 48% in Lahore).”
