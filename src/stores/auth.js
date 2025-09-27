@@ -52,26 +52,26 @@ export const useAuthStore = defineStore('auth', () => {
             isLoading.value = false;
         }
     };
-        const hasPermission = (permission) => {
-            switch (permission) {
-                case 'manageUsers':
-                    return ['admin', 'manager'].includes(userRole.value);
-                case 'manageInventory':
-                    return ['admin', 'manager'].includes(userRole.value);
-                case 'manageMenu':
-                    return ['admin', 'manager'].includes(userRole.value);
-                case 'viewReports':
-                    return ['admin', 'manager'].includes(userRole.value);
-                case 'processPayments':
-                    return ['admin', 'manager', 'cashier'].includes(userRole.value);
-                case 'takeOrders':
-                    return ['admin', 'manager', 'waiter'].includes(userRole.value);
-                case 'view_kitchen':
-                    return ['admin', 'manager', 'kitchen_staff'].includes(userRole.value);
-                default:
-                    return false;
-            }
-        };
+    const hasPermission = (permission) => {
+        switch (permission) {
+            case 'manageUsers':
+                return ['admin', 'manager'].includes(userRole.value);
+            case 'manageInventory':
+                return ['admin', 'manager'].includes(userRole.value);
+            case 'manageMenu':
+                return ['admin', 'manager'].includes(userRole.value);
+            case 'viewReports':
+                return ['admin', 'manager'].includes(userRole.value);
+            case 'processPayments':
+                return ['admin', 'manager', 'cashier'].includes(userRole.value);
+            case 'takeOrders':
+                return ['admin', 'manager', 'waiter'].includes(userRole.value);
+            case 'view_kitchen':
+                return ['admin', 'manager', 'kitchen_staff'].includes(userRole.value);
+            default:
+                return false;
+        }
+    };
     const register = async (userData) => {
         isLoading.value = true;
         try {

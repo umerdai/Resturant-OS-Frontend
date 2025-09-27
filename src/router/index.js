@@ -183,8 +183,20 @@ const router = createRouter({
                 {
                     path: '/kitchen',
                     name: 'kitchen-display',
-                    component: () => import('@/views/pages/kitchen/KitchenDisplay.vue'),
+                    component: () => import('@/views/KitchenManagement.vue'),
                     meta: { requiresAuth: true, roles: ['admin', 'manager', 'kitchen'] }
+                },
+                {
+                    path: '/staff',
+                    name: 'staff-management',
+                    component: () => import('@/views/StaffManagement.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                },
+                {
+                    path: '/payments',
+                    name: 'payment-management',
+                    component: () => import('@/views/PaymentManagement.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'cashier'] }
                 },
                 {
                     path: '/billing',
@@ -197,6 +209,18 @@ const router = createRouter({
                     name: 'inventory-management',
                     component: () => import('@/views/InventoryManagement.vue'),
                     meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                },
+                {
+                    path: '/enhanced-inventory',
+                    name: 'enhanced-inventory',
+                    component: () => import('@/views/EnhancedInventoryPage.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                },
+                {
+                    path: '/ai-usecases',
+                    name: 'ai-usecases',
+                    component: () => import('@/views/AIUseCases.vue'),
+                    meta: { requiresAuth: false, roles: ['admin', 'manager'] }
                 },
                 {
                     path: '/reports-analytics',

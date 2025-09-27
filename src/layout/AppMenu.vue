@@ -13,8 +13,17 @@ const model = ref([
             { label: 'Inventory', icon: 'pi pi-fw pi-cart-minus', to: '/inventory' },
             { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/menu' },
             { label: 'Sales', icon: 'pi pi-fw pi-credit-card', to: '/sales' },
-            { label: 'POS', icon: 'pi pi-fw pi-desktop', to: '/pos' }
+            { label: 'POS', icon: 'pi pi-fw pi-desktop', to: '/pos' },
+            { label: 'Kitchen', icon: 'pi pi-fw pi-cog', to: '/kitchen' },
+            { label: 'Staff', icon: 'pi pi-fw pi-users', to: '/staff' },
+            { label: 'Payments', icon: 'pi pi-fw pi-credit-card', to: '/payments' },
+            { label: 'Reports & Analytics', icon: 'pi pi-fw pi-chart-pie', to: '/reports-analytics' },
+            { label: 'Enhanced Inventory', icon: 'pi pi-fw pi-warehouse', to: '/enhanced-inventory' }
         ]
+    },
+    {
+        label: 'AI',
+        items: [{ label: 'AI Use Cases', icon: 'pi pi-fw pi-robot', to: '/ai-usecases' }]
     },
     {
         label: 'UI Components',
@@ -149,9 +158,9 @@ const model = ref([
 
 <template>
     <ul class="layout-menu">
-        <template v-for="(item, i) in model" :key="item">
-            <app-menu-item v-if="!item.separator" :item="item" :index="i"></app-menu-item>
-            <li v-if="item.separator" class="menu-separator"></li>
+        <template v-for="(item, i) in model">
+            <app-menu-item v-if="!item.separator" :key="i" :item="item" :index="i"></app-menu-item>
+            <li v-if="item.separator" :key="`sep-${i}`" class="menu-separator"></li>
         </template>
     </ul>
 </template>
