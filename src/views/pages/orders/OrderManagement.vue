@@ -490,8 +490,8 @@ onMounted(async () => {
                             <span>${{ selectedOrder.tax?.toFixed(2) }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span>Service Charge:</span>
-                            <span>${{ selectedOrder.serviceCharge?.toFixed(2) }}</span>
+                            <span style="color: var(--text-color);">Service Charge:</span>
+                            <span style="color: var(--text-color);">${{ selectedOrder.serviceCharge?.toFixed(2) }}</span>
                         </div>
                         <div class="flex justify-between font-bold text-lg border-t pt-2">
                             <span>Total:</span>

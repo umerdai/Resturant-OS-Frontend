@@ -165,7 +165,7 @@ const getItemImage = (item) => {
 <template>
     <div class="pos-layout min-h-screen bg-gray-50">
         <!-- Header -->
-        <Toolbar class="mb-4 shadow-sm">
+        <Toolbar class=" shadow-sm">
             <template #start>
                 <h1 class="text-2xl font-bold text-gray-800">Point of Sale</h1>
             </template>
@@ -186,9 +186,9 @@ const getItemImage = (item) => {
             </template>
         </Toolbar>
 
-        <div class="flex gap-6 px-6 pb-6">
+        <div class="flex gap-6 min-h-screen POS-Parent-component">
             <!-- Menu Items Section -->
-            <div class="flex-1">
+            <div class="flex-1  p-4 POS-Menu-component">
                 <Card class="h-full">
                     <template #title>
                         <div class="flex justify-between items-center">
@@ -234,7 +234,7 @@ const getItemImage = (item) => {
             </div>
 
             <!-- Cart Section -->
-            <div class="w-96">
+            <div class="w-96 POS-Order-Summary-component">
                 <Card class="h-full">
                     <template #title>
                         <div class="flex justify-between items-center">
@@ -258,12 +258,12 @@ const getItemImage = (item) => {
                                 <span>-{{ formatCurrency(posStore.discountAmount) }}</span>
                             </div>
                             <div class="flex justify-between text-sm text-gray-600">
-                                <span>Tax ({{ (posStore.taxRate * 100).toFixed(0) }}%):</span>
-                                <span>{{ formatCurrency(posStore.cartTax) }}</span>
+                                <span style="color: var(--text-color);">Tax ({{ (posStore.taxRate * 100).toFixed(0) }}%):</span>
+                                <span style="color: var(--text-color);">{{ formatCurrency(posStore.cartTax) }}</span>
                             </div>
                             <div class="flex justify-between text-sm text-gray-600">
-                                <span>Service Charge ({{ (posStore.serviceChargeRate * 100).toFixed(0) }}%):</span>
-                                <span>{{ formatCurrency(posStore.cartServiceCharge) }}</span>
+                                <span style="color: var(--text-color);">Service Charge ({{ (posStore.serviceChargeRate * 100).toFixed(0) }}%):</span>
+                                <span style="color: var(--text-color);">{{ formatCurrency(posStore.cartServiceCharge) }}</span>
                             </div>
                             <Divider />
                             <div class="flex justify-between text-xl font-bold">
@@ -332,5 +332,22 @@ const getItemImage = (item) => {
 
 .menu-item-card:active {
     transform: translateY(0);
+}
+
+.POS-Menu-component {
+    border: 2px solid var(--p-button-primary-border-color);
+  background-color: var(--surface-card);
+  color: var(--text-color);
+
+}
+.POS-Order-Summary-component{
+       border: 2px solid var(--p-button-primary-border-color);
+}
+.POS-Parent-component {
+
+  background-color: var(--surface-card);
+  color: var(--text-color);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
 }
 </style>

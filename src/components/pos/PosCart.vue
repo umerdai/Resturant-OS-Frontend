@@ -102,7 +102,7 @@ const getItemTotal = (item) => {
         <div v-else class="space-y-1">
             <!-- Applied Discount -->
             <div v-if="appliedDiscount" class="bg-green-50 p-3 rounded-lg border border-green-200 mb-4">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center ">
                     <div>
                         <div class="text-green-700 font-medium">{{ appliedDiscount.name }}</div>
                         <div class="text-green-600 text-sm">{{ appliedDiscount.description }}</div>
@@ -122,10 +122,10 @@ const getItemTotal = (item) => {
                     <div v-for="item in cart" :key="item.cartItemId" class="cart-item border rounded-lg p-3 bg-white hover:bg-gray-50 transition-colors">
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex-1 cursor-pointer" @click="openItemDetails(item)">
-                                <h4 class="font-medium text-gray-800 hover:text-blue-600">
+                                <h4 class="font-medium hover:text-blue-600">
                                     {{ item.name }}
                                 </h4>
-                                <p class="text-sm text-gray-600">{{ formatCurrency(item.price) }} each</p>
+                                <p class="text-sm ">{{ formatCurrency(item.price) }} each</p>
                                 <div v-if="item.modifiers && item.modifiers.length > 0" class="mt-1">
                                     <div v-for="modifier in item.modifiers" :key="modifier.id" class="text-xs text-gray-500">+ {{ modifier.name }} ({{ formatCurrency(modifier.price) }})</div>
                                 </div>
@@ -134,16 +134,37 @@ const getItemTotal = (item) => {
                             <Button icon="pi pi-trash" size="small" severity="danger" text @click="removeItem(item.cartItemId)" class="p-1 ml-2" />
                         </div>
 
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-2">
-                                <Button icon="pi pi-minus" size="small" severity="secondary" @click="updateQuantity(item.cartItemId, item.quantity - 1)" :disabled="item.quantity <= 1" class="p-1" />
-                                <InputNumber :model-value="item.quantity" @update:model-value="updateQuantity(item.cartItemId, $event)" :min="1" :max="99" class="w-16 text-center" size="small" />
-                                <Button icon="pi pi-plus" size="small" severity="secondary" @click="updateQuantity(item.cartItemId, item.quantity + 1)" class="p-1" />
-                            </div>
-                            <div class="text-lg font-semibold text-gray-800">
-                                {{ formatCurrency(getItemTotal(item)) }}
-                            </div>
-                        </div>
+                       <div class="flex justify-between items-center gap-2">
+  <!-- Plus button -->
+  <Button
+    icon="pi pi-plus"
+    size="small"
+    severity="secondary"
+    @click="updateQuantity(item.cartItemId, item.quantity + 1)"
+    class="h-9 w-9 flex items-center justify-center"
+  />
+
+  <!-- Input -->
+<span class="w-10 text-center font-medium">
+    {{ item.quantity }}
+  </span>
+
+  <!-- Minus button -->
+  <Button
+    icon="pi pi-minus"
+    size="small"
+    severity="secondary"
+    @click="updateQuantity(item.cartItemId, item.quantity - 1)"
+    :disabled="item.quantity <= 1"
+    class="h-9 w-9 flex items-center justify-center"
+  />
+
+  <!-- Price -->
+  <div class="text-lg font-semibold text-gray-800 ml-4">
+    {{ formatCurrency(getItemTotal(item)) }}
+  </div>
+</div>
+
                     </div>
                 </div>
             </ScrollPanel>
@@ -201,8 +222,12 @@ const getItemTotal = (item) => {
 
 <style scoped>
 .cart-item {
-    border: 1px solid #e2e8f0;
+    border: 1px solid #475f7e;
     transition: all 0.2s ease-in-out;
+     background-color: var(--surface-card);
+  color: var(--p-card-color);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
 }
 
 .cart-item:hover {

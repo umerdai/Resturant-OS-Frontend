@@ -342,7 +342,7 @@ watch(
                             <span>${{ orderSummary.subtotal.toFixed(2) }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span>Tax (8%):</span>
+                            <span style="color: var(--text-color);" >Tax (8%):</span>
                             <span>${{ orderSummary.tax.toFixed(2) }}</span>
                         </div>
                         <div class="flex justify-between">
