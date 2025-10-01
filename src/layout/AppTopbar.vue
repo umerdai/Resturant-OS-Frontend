@@ -6,6 +6,8 @@ import Popover from 'primevue/popover';
 import { useRouter } from 'vue-router';
 import { useRoute } from 'vue-router';
 const route = useRoute();
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
 
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 
@@ -24,7 +26,7 @@ const router = useRouter();
 // ✅ logout function
 const logout = () => {
     // clear tokens/sessions if needed
-    // localStorage.removeItem('token')
+    authStore.logout();
     console.log('Logging out...');
     router.push('/auth/login');
 };
@@ -96,18 +98,27 @@ const logout = () => {
                         <i class="pi pi-user"></i>
                     </button>
 
-                    <!-- Popover -->
-                     <router-link to="/auth/login">Go to Login</router-link>
-
                     <Popover ref="popoverRef">
                         <div class="p-3 text-center">
                             <div class="font-bold text-lg"><i class="pi pi-user mr-2"></i>{{ username }}</div>
                             <div class="text-sm text-gray-600 mt-2"><i class="pi pi-briefcase mr-2"></i>{{ role }}</div>
                             <div class="text-sm text-gray-600 mt-1"><i class="pi pi-building mr-2"></i>{{ branch }}</div>
-    <router-link to="/logout" class="nav-item" :class="{ active: isRouteActive('/logout') }" v-tooltip.right="isCollapsed ? 'Logout' : ''">
-                    <i class="pi pi-chart-bar nav-icon"></i>
-                    <span class="nav-label" v-if="!isCollapsed">Logout</span>
-                </router-link>
+    <!-- User Actions -->
+<div class="user-actions">
+  <Button 
+    icon="pi pi-user" 
+    text 
+    @click="goToProfile" 
+    v-tooltip.right="isCollapsed ? 'Profile' : 'My Profile'" 
+  />
+  <Button 
+    icon="pi pi-sign-out" 
+    text 
+    severity="danger" 
+    @click="logout" 
+    v-tooltip.right="isCollapsed ? 'Logout' : 'Sign Out'" 
+  />
+</div>
 
 
                         </div>

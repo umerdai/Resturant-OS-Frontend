@@ -336,12 +336,14 @@ const getItemImage = (item) => {
 
 .POS-Menu-component {
     border: 2px solid var(--p-button-primary-border-color);
+    border-radius: 10px;
   background-color: var(--surface-card);
   color: var(--text-color);
 
 }
 .POS-Order-Summary-component{
        border: 2px solid var(--p-button-primary-border-color);
+    border-radius: 10px;
 }
 .POS-Parent-component {
 

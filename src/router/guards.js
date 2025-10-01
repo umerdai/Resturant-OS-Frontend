@@ -1,91 +1,38 @@
 import { useAuthStore } from '@/stores/auth';
 
 export function createAuthGuard() {
-    return (to, from, next) => {
+    return async (to, from, next) => {
         const authStore = useAuthStore();
 
-        // Initialize auth if not done already
-        if (!authStore.isAuthenticated) {
-            authStore.initializeAuth();
+        // Ensure auth state is initialized (await if async)
+        if (!authStore.initialized) {
+            await authStore.initializeAuth();
         }
 
-        // Routes that don't require authentication
+        // Public routes (match by both name and path)
         const publicRoutes = ['/auth/login', '/auth/register', '/landing'];
+        const publicNames = ['login', 'register', 'landing'];
 
-        if (publicRoutes.includes(to.path)) {
-            // If user is already authenticated and trying to access auth pages, redirect to dashboard
+        if (publicRoutes.includes(to.path) || publicNames.includes(to.name)) {
             if (authStore.isAuthenticated) {
-                next('/');
-            } else {
-                next();
+                return next('/'); // already logged in
             }
-            return;
+            return next(); // allow login/register/landing
         }
 
-        // Check if user is authenticated
+        // Private routes
         if (!authStore.isAuthenticated) {
-            next('/auth/login');
-            return;
+            return next('/auth/login');
         }
 
-        // Role-based access control
+        // Role-based access
         const userRole = authStore.userRole;
         const requiredRoles = to.meta?.roles;
 
         if (requiredRoles && !requiredRoles.includes(userRole)) {
-            // User doesn't have required role, redirect to access denied
-            next('/auth/access');
-            return;
+            return next('/auth/access');
         }
 
-        next();
+        return next();
     };
-}
-
-export function createRoleGuard(allowedRoles) {
-    return (to, from, next) => {
-        const authStore = useAuthStore();
-
-        if (!authStore.isAuthenticated) {
-            next('/auth/login');
-            return;
-        }
-
-        const userRole = authStore.userRole;
-
-        if (!allowedRoles.includes(userRole)) {
-            next('/auth/access');
-            return;
-        }
-
-        next();
-    };
-}
-
-// Helper function to check permissions for specific features
-export function canAccess(feature) {
-    const authStore = useAuthStore();
-
-    if (!authStore.isAuthenticated) {
-        return false;
-    }
-
-    switch (feature) {
-        case 'user_management':
-            return authStore.canManageUsers;
-        case 'inventory_management':
-            return authStore.canManageInventory;
-        case 'menu_management':
-            return authStore.canManageMenu;
-        case 'reports':
-            return authStore.canViewReports;
-        case 'payments':
-            return authStore.canProcessPayments;
-        case 'orders':
-            return authStore.canTakeOrders;
-        case 'kitchen':
-            return authStore.canAccessKitchen;
-        default:
-            return false;
-    }
 }

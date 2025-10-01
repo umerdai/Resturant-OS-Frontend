@@ -59,7 +59,7 @@ const goToProfile = () => {
 
 const logout = () => {
     authStore.logout();
-    router.push('/login');
+    router.push('/auth/login');
 };
 
 // Watch for route changes to auto-expand sections

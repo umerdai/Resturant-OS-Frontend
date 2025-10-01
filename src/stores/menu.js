@@ -263,7 +263,7 @@ export const useMenuStore = defineStore('menu', () => {
                         name: 'Fresh Orange Juice',
                         description: 'Freshly squeezed orange juice',
                         price: 4.99,
-                        image: '/api/placeholder/300/200',
+                        image: 'https://uk.ooni.com/cdn/shop/articles/20220211142645-margherita-9920_e41233d5-dcec-461c-b07e-03245f031dfe.jpg?v=1737105431',
                         isAvailable: true,
                         prepTime: 2,
                         calories: 110,

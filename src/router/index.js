@@ -14,11 +14,7 @@ const router = createRouter({
                     name: 'dashboard',
                     component: () => import('@/views/Dashboard.vue')
                 },
-                {
-                    path: '/logout',
-                    name: 'logout',
-                    component: () => import('@/views/pages/auth/Login.vue')
-                },
+
                 {
                     path: '/analytics',
                     name: 'Analytics',
