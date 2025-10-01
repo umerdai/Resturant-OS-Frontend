@@ -297,11 +297,11 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="staff-management p-6">
+    <div class="staff-management p-6 staff-management-parent">
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Staff Management</h1>
+                <h1 class="text-3xl font-bold ">Staff Management</h1>
                 <p class="text-gray-600">Manage staff authentication, shifts, and performance</p>
             </div>
 
@@ -342,8 +342,8 @@ onMounted(async () => {
                         </div>
 
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-purple-600">{{ currentUser.performance?.rating || 0 }}/5.0</div>
-                            <div class="text-sm text-gray-600">Performance Rating</div>
+                            <div class="text-2xl font-bold ">{{ currentUser.performance?.rating || 0 }}/5.0</div>
+                            <div class="text-sm">Performance Rating</div>
                         </div>
                     </div>
 
@@ -368,7 +368,7 @@ onMounted(async () => {
                         </div>
                     </template>
 
-                    <Column field="name" header="Name">
+                    <Column field="name" header="Name" header-class="bg-red-50">
                         <template #body="slotProps">
                             <div class="flex items-center gap-2">
                                 <Avatar :label="slotProps.data.name.charAt(0)" size="normal" shape="circle" />
@@ -400,7 +400,7 @@ onMounted(async () => {
 
                     <Column field="performance" header="Performance">
                         <template #body="slotProps">
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 staff-management-parent">
                                 <ProgressBar :value="(slotProps.data.performance?.rating || 0) * 20" class="w-20" />
                                 <span class="text-sm">{{ slotProps.data.performance?.rating || 0 }}/5</span>
                             </div>
@@ -560,6 +560,10 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.staff-management-parent {
+    background-color: var(--surface-card);
+    color: var(--p-text-color);
+}
 :deep(.staff-tabs .p-tabview-panels) {
     padding: 0;
 }

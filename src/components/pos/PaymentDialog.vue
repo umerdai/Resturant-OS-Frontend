@@ -328,6 +328,7 @@ const printReceipt = () => {
 
 <style scoped>
 .payment-method-card {
+    background-color: var(--surface-card);
     transition: all 0.2s ease-in-out;
 }
 

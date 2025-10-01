@@ -425,35 +425,55 @@ onMounted(async () => {
                     @dragover="handleDragOver"
                 >
                     <!-- Tables -->
-                    <div
-                        v-for="table in tableStore.tables"
-                        :key="table.id"
-                        :id="`table-${table.id}`"
-                        class="table-item absolute cursor-move select-none"
-                        :style="{
-                            left: table.x + 'px',
-                            top: table.y + 'px',
-                            width: table.width + 'px',
-                            height: table.height + 'px'
-                        }"
-                        draggable="true"
-                        @dragstart="handleDragStart($event, table)"
-                        @contextmenu="showTableContextMenu($event, table)"
-                    >
-                        <div class="table-visual h-full flex flex-col items-center justify-center rounded-lg border-2 shadow-md transition-all duration-200 hover:shadow-lg" :class="getTableClasses(table)">
-                            <div class="text-xs font-bold mb-1">{{ table.number }}</div>
-                            <div class="text-xs opacity-80">{{ table.seats }} seats</div>
+<div
+  v-for="table in tableStore.tables"
+  :key="table.id"
+  :id="`table-${table.id}`"
+  class="table-item absolute cursor-move select-none"
+  :style="{
+    left: table.x + 'px',
+    top: table.y + 'px',
+    width: table.width + 'px',
+    height: table.shape === 'square' ? table.width + 'px' : table.height + 'px'
+  }"
+  draggable="true"
+  @dragstart="handleDragStart($event, table)"
+  @contextmenu="showTableContextMenu($event, table)"
+>
+  <div
+    class="table-visual h-full flex flex-col items-center justify-center border-2 shadow-md transition-all duration-200 hover:shadow-lg"
+    :class="[
+      getTableClasses(table),
+      table.shape === 'circle'
+        ? 'table-circle'
+        : table.shape === 'square'
+        ? 'table-square'
+        : 'table-rectangle'
+    ]"
+  >
+    <div class="text-xs font-bold mb-1">{{ table.number }}</div>
+    <div class="text-xs opacity-80">{{ table.seats }} seats</div>
 
-                            <!-- Status Badge -->
-                            <Badge :value="table.status.replace('_', ' ').toUpperCase()" :severity="getTableStatusSeverity(table.status)" class="text-xs mt-1" />
+    <!-- Status Badge -->
+    <Badge
+      :value="table.status.replace('_', ' ').toUpperCase()"
+      :severity="getTableStatusSeverity(table.status)"
+      class="text-xs mt-1"
+    />
 
-                            <!-- Waiter Assignment -->
-                            <div v-if="table.assignedWaiter" class="text-xs mt-1 opacity-70">Waiter: {{ getWaiterName(table.assignedWaiter) }}</div>
+    <!-- Waiter Assignment -->
+    <div v-if="table.assignedWaiter" class="text-xs mt-1 opacity-70">
+      Waiter: {{ getWaiterName(table.assignedWaiter) }}
+    </div>
 
-                            <!-- Current Order -->
-                            <div v-if="table.currentOrder" class="text-xs mt-1 font-medium">${{ table.currentOrder.total?.toFixed(2) }}</div>
-                        </div>
-                    </div>
+    <!-- Current Order -->
+    <div v-if="table.currentOrder" class="text-xs mt-1 font-medium">
+      ${{ table.currentOrder.total?.toFixed(2) }}
+    </div>
+  </div>
+</div>
+
+
 
                     <!-- Grid Lines (Optional) -->
                     <svg v-if="showGrid" class="absolute inset-0 pointer-events-none opacity-20" :width="tableStore.floorLayout.width" :height="tableStore.floorLayout.height">
@@ -491,17 +511,7 @@ onMounted(async () => {
                     <Dropdown id="tableShape" v-model="newTable.shape" :options="tableShapes" option-label="label" option-value="value" class="w-full" />
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="field">
-                        <label for="tableWidth" class="block text-sm font-medium mb-2">Width (px)</label>
-                        <InputNumber id="tableWidth" v-model="newTable.width" :min="40" :max="200" class="w-full" />
-                    </div>
-
-                    <div class="field">
-                        <label for="tableHeight" class="block text-sm font-medium mb-2">Height (px)</label>
-                        <InputNumber id="tableHeight" v-model="newTable.height" :min="40" :max="200" class="w-full" />
-                    </div>
-                </div>
+              
 
                 <div class="flex justify-end gap-2 pt-4">
                     <Button label="Cancel" outlined @click="showAddTableDialog = false" />
@@ -564,4 +574,22 @@ onMounted(async () => {
 .table-item:hover .table-visual {
     transform: scale(1.05);
 }
+.table-circle {
+    width: 110px !important;
+    height: 110px !important;
+  border-radius: 50% !important;
+}
+
+.table-square {
+    width: 90px !important;
+    height: 90px !important;
+  border-radius: 8px;
+}
+
+.table-rectangle {
+    width: 120px !important;
+    height: 80px !important;
+  border-radius: 8px;
+}
+
 </style>

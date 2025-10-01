@@ -3,6 +3,9 @@ import { ref } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import AppConfigurator from './AppConfigurator.vue';
 import Popover from 'primevue/popover';
+import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 
@@ -10,10 +13,20 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 const username = ref('John Doe');
 const role = ref('Inventory Manager');
 const branch = ref('F-7 Branch');
-
+const isRouteActive = (path) => {
+    return route.path.startsWith(path);
+};
 const popoverRef = ref(null);
 const togglePopover = (event) => {
     popoverRef.value.toggle(event);
+};
+const router = useRouter();
+// ✅ logout function
+const logout = () => {
+    // clear tokens/sessions if needed
+    // localStorage.removeItem('token')
+    console.log('Logging out...');
+    router.push('/auth/login');
 };
 </script>
 <template>
@@ -84,11 +97,19 @@ const togglePopover = (event) => {
                     </button>
 
                     <!-- Popover -->
+                     <router-link to="/auth/login">Go to Login</router-link>
+
                     <Popover ref="popoverRef">
                         <div class="p-3 text-center">
                             <div class="font-bold text-lg"><i class="pi pi-user mr-2"></i>{{ username }}</div>
                             <div class="text-sm text-gray-600 mt-2"><i class="pi pi-briefcase mr-2"></i>{{ role }}</div>
                             <div class="text-sm text-gray-600 mt-1"><i class="pi pi-building mr-2"></i>{{ branch }}</div>
+    <router-link to="/logout" class="nav-item" :class="{ active: isRouteActive('/logout') }" v-tooltip.right="isCollapsed ? 'Logout' : ''">
+                    <i class="pi pi-chart-bar nav-icon"></i>
+                    <span class="nav-label" v-if="!isCollapsed">Logout</span>
+                </router-link>
+
+
                         </div>
                     </Popover>
                 </div>
