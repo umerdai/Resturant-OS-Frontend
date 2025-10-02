@@ -23,12 +23,12 @@ Following are the Modules which should be inculded in the final product:
 
 For the MVP, following features will be implemented:
 
-following section will a high level implementation along with features to be implemented in each module
+following section will a high level implementation along with features to be implemented in each module (All this will be done for multiple branches as our target 80/20 has 2 branches).
 -Login
 -Signup
--Finnance Dashboard
--Sales
-- 2 AI usecases i.e ("Sales forcasting for the upcoming week", "")
+-Finnance Dashboard (For indivisual and all branches)
+-Sales (For indivisual and all branches)
+- 2 AI usecases i.e ("Sales forcasting for the upcoming week for multiple branches", "Comparison ")
 - POS
 - Inventory
 
