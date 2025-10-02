@@ -21,7 +21,17 @@ Following are the Modules which should be inculded in the final product:
 -Specific branch offers on menu based on sales
 -4 views(Owner,Branch Manager, Inventory mamanger, Casiher)
 
+For the MVP, following features will be implemented:
+
 following section will a high level implementation along with features to be implemented in each module
+-Login
+-Signup
+-Finnance Dashboard
+-Sales
+- 2 AI usecases i.e ("Sales forcasting for the upcoming week", "")
+- POS
+- Inventory
+
 
 1. Full Scale POS:
    -List all the menu items with prices and tax.
