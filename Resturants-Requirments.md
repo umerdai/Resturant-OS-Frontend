@@ -28,7 +28,8 @@ following section will a high level implementation along with features to be imp
 -Signup
 -Finnance Dashboard (For indivisual and all branches)
 -Sales (For indivisual and all branches)
-- 2 AI usecases i.e ("Sales forcasting for the upcoming week for multiple branches", "Comparison ")
+- 2 AI usecases i.e ("Sales forcasting for the upcoming week for multiple branches", "Comparison between branches and sales analytics")
+  ("The model has predicted that lahore branch will sell 7% more the next week as we are expecting organic grown along with the new discounts that are being released","Lahore branch revenue was 12% lower than Karachi this week. Avg ticket size in Lahore dropped to PKR 820 vs PKR 960 in Karachi, largely due to higher discount usage (18% vs 5%)")
 - POS
 - Inventory
 
