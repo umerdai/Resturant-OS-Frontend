@@ -76,7 +76,8 @@ const filteredProducts = computed(() => {
             <DataTable :value="filteredProducts" tableStyle="min-width: 50rem">
                 <Column field="name" header="Item Name"></Column>
                 <Column field="quantity" header="Quantity"></Column>
-                <Column field="price" header="Price"></Column>
+                <Column field="category" header="Category"></Column>
+                <Column field="price" header="Price per KG"></Column>
             </DataTable>
         </div>
         <div v-else class="text-center text-gray-500 py-6">

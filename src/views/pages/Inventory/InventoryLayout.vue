@@ -25,7 +25,7 @@ const branches = ref([
 
         <!-- Actions -->
         <div class="flex flex-wrap gap-3 mb-6">
-            <Button label="Add Item" icon="pi pi-plus" @click="$router.push('/inventory/Add')" class="p-button-success" />
+            <Button label="Add inventory" icon="pi pi-plus" @click="$router.push('/inventory/Add')" class="p-button-success" />
             <Button label="View Inventory" icon="pi pi-list" @click="$router.push('/inventory/list')" class="p-button-info" />
             <Button label="Add New Item" icon="pi pi-file" @click="$router.push('/inventory/NewItem')" class="p-button-warning" />
             <Button label="Update Item" icon="pi pi-pencil" @click="$router.push('/inventory/UpdateItem')" class="p-button-help" />

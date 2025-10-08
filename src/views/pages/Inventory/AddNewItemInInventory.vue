@@ -49,50 +49,16 @@ const saveItem = () => {
             <!-- Row 2 -->
             <div class="form-row">
                 <div class="form-cell">
-                    <label for="quantity">Quantity</label>
-                    <InputNumber id="quantity" v-model="newItem.quantity" :min="0" class="w-full" />
+                    <label for="price">Price Per KG</label>
+                    <InputNumber id="price" v-model="newItem.price" mode="currency" currency="PKR" class="w-full" />
                 </div>
-                <div class="form-cell">
-                    <label for="price">Price</label>
-                    <InputNumber id="price" v-model="newItem.price" mode="currency" currency="USD" class="w-full" />
-                </div>
-            </div>
-
-            <!-- Row 3 -->
-            <div class="form-row">
-                <div class="form-cell">
+                 <div class="form-cell">
                     <label for="unit">Unit</label>
                     <Dropdown id="unit" v-model="newItem.unit" :options="units" placeholder="Select unit" class="w-full" />
-                </div>
-                <div class="form-cell">
-                    <label for="supplier">Supplier</label>
-                    <Dropdown id="supplier" v-model="newItem.supplier" :options="suppliers" placeholder="Select supplier" class="w-full" />
                 </div>
             </div>
 
             <!-- Row 4 -->
-            <div class="form-row">
-                <div class="form-cell">
-                    <label for="expiry">Expiry Date</label>
-                    <Calendar id="expiry" v-model="newItem.expiryDate" dateFormat="yy-mm-dd" showIcon class="w-full" />
-                </div>
-                <div class="form-cell">
-                    <label for="reorder">Reorder Level</label>
-                    <InputNumber id="reorder" v-model="newItem.reorderLevel" :min="0" class="w-full" />
-                </div>
-            </div>
-
-            <!-- Row 5 -->
-            <div class="form-row">
-                <div class="form-cell">
-                    <label for="barcode">Barcode</label>
-                    <InputText id="barcode" v-model="newItem.barcode" placeholder="Enter barcode" class="w-full" />
-                </div>
-                <div class="form-cell">
-                    <label for="location">Storage Location</label>
-                    <InputText id="location" v-model="newItem.location" placeholder="Enter location" class="w-full" />
-                </div>
-            </div>
         </div>
 
         <!-- Submit -->

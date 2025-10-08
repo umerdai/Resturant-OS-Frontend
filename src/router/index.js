@@ -59,7 +59,29 @@ const router = createRouter({
                 {
                     path: '/menu',
                     name: 'Menu',
-                    component: () => import('@/views/pages/Menu/MenuLayout.vue')
+                    component: () => import('@/views/pages/Menu/MenuLayout.vue'),
+                    children: [
+                        {
+                            path: 'List',
+                            name: 'viewMenuItem',
+                            component: () => import('@/views/pages/Menu/MenuList.vue')
+                        },
+                        {
+                            path: 'add',
+                            name: 'addMenuItem',
+                            component: () => import('@/views/pages/Menu/AddMenuItem.vue')
+                        },
+                        {
+                            path: 'Newitem',
+                            name: 'NewItemInInventory',
+                            component: () => import('@/views/pages/Inventory/AddNewItemInInventory.vue')
+                        },
+                        {
+                            path: 'UpdateItem',
+                            name: 'UpdateItemInInventory',
+                            component: () => import('@/views/pages/Inventory/UpdateInventory.vue')
+                        }
+                    ]
                 },
                 {
                     path: '/sales',

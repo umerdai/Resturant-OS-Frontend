@@ -5,20 +5,37 @@ import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
 
-const products = ref([]);
+// Placeholder supplier options
 const suppliers = ref([
     { id: 1, name: 'Local Farm' },
     { id: 2, name: 'Metro Wholesalers' },
     { id: 3, name: 'FreshFoods Ltd' }
 ]);
 
+// Placeholder category options
+const categories = ref([
+    { label: 'Meat', value: 'Meat' },
+    { label: 'Vegetable', value: 'Vegetable' },
+    { label: 'Condiment', value: 'Condiment' },
+    { label: 'Dairy', value: 'Dairy' },
+    { label: 'Beverage', value: 'Beverage' },
+    { label: 'Bakery', value: 'Bakery' },
+    { label: 'Seafood', value: 'Seafood' },
+    { label: 'Spice', value: 'Spice' },
+    { label: 'Grain', value: 'Grain' },
+    { label: 'Frozen', value: 'Frozen' }
+]);
+
+const products = ref([]);
 const inventory = ref([]);
 
 // Load mock products
 onMounted(() => {
     ProductService.getProductsMini().then((data) => {
         products.value = data;
-        inventory.value = [{ id: 1, name: null, quantity: 0, price: 0, category: '', supplier: null }];
+        inventory.value = [
+            { id: 1, name: null, quantity: 0, price: 0, category: '', supplier: null }
+        ];
     });
 });
 
@@ -76,25 +93,27 @@ const deleteRow = (row) => {
             </Column>
 
             <!-- Price (numeric currency) -->
-            <Column field="price" header="Price (PKR):">
+            <Column field="price" header="Price Per kg (PKR):">
                 <template #body="{ data }">
                     <InputNumber v-model="data.price" mode="currency" currency="PKR" style="width: 100%" />
                 </template>
             </Column>
 
-            <!-- Supplier Dropdown -->
-            <Column field="supplier" header="Supplier">
-                <template #body="{ data }">
-                    <Dropdown v-model="data.supplier" :options="suppliers" optionLabel="name" placeholder="Select Supplier" style="width: 100%" />
-                </template>
-            </Column>
-
             <!-- Category (readonly autofill) -->
-            <Column field="category" header="Category">
-                <template #body="{ data }">
-                    <span>{{ data.category }}</span>
-                </template>
-            </Column>
+           <!-- Category (dropdown editable) -->
+<Column field="category" header="Category">
+    <template #body="{ data }">
+        <Dropdown 
+            v-model="data.category"
+            :options="categories"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Select Category"
+            style="width: 100%"
+        />
+    </template>
+</Column>
+
 
             <!-- Actions -->
             <Column header="Actions">
