@@ -13,7 +13,7 @@ const toast = useToast();
 // Component state
 const isRealTimeEnabled = ref(true);
 const loadingOrders = ref(false);
-
+const branches = ref(["dha", "lahore"]);
 // Real-time update interval
 let updateInterval = null;
 
@@ -164,12 +164,14 @@ const refreshDashboard = async () => {
 // Lifecycle
 onMounted(async () => {
     await refreshDashboard();
-
+    await fetchBranchNames();
     if (isRealTimeEnabled.value) {
         startRealTimeUpdates();
     }
 });
-
+const fetchBranchNames= async ()=>{
+    console.log("hello");
+}
 onUnmounted(() => {
     stopRealTimeUpdates();
 });
@@ -180,7 +182,23 @@ onUnmounted(() => {
         <div class="dashboard-header">
             <div>
                 <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0">Good {{ getTimeGreeting() }}, {{ authStore.user?.name || 'User' }}!</h1>
-                <p class="text-surface-600 dark:text-surface-400">Here's what's happening at your restaurant today</p>
+               <div class="flex flex-wrap gap-2 justify-center items-center">
+    <!-- Static button -->
+    <button
+      class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"
+    >
+      All Branches
+    </button>
+
+    <!-- Dynamic buttons from API -->
+   <button
+  v-for="(branch, index) in branches"
+  :key="index"
+  class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition "
+>
+  {{ branch }}
+</button>
+  </div>
             </div>
             <div class="flex gap-3">
                 <Button :label="isRealTimeEnabled ? 'Pause Updates' : 'Enable Real-time'" :icon="isRealTimeEnabled ? 'pi pi-pause' : 'pi pi-play'" :severity="isRealTimeEnabled ? 'warning' : 'success'" outlined @click="toggleRealTime" />
