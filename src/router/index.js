@@ -44,13 +44,18 @@ const router = createRouter({
                             component: () => import('@/views/pages/Inventory/ViewInventory.vue')
                         },
                         {
-                            path: 'Newitem',
-                            name: 'NewItemInInventory',
+                            path: 'new',
+                            name: 'long',
                             component: () => import('@/views/pages/Inventory/AddNewItemInInventory.vue')
                         },
                         {
-                            path: 'UpdateItem',
-                            name: 'UpdateItemInInventory',
+                            path: 'newitem',
+                            name: 'NewItemInInventory',
+                            component: () => import('@/views/pages/Inventory/ViewInventory.vue')
+                        },
+                        {
+                            path: 'update',
+                            name: 'Update',
                             component: () => import('@/views/pages/Inventory/UpdateInventory.vue')
                         }
                     ]
@@ -196,12 +201,7 @@ const router = createRouter({
                     component: () => import('@/views/pages/orders/OrderManagement.vue'),
                     meta: { requiresAuth: true, roles: ['admin', 'manager', 'waiter', 'cashier'] }
                 },
-                {
-                    path: '/menu',
-                    name: 'menu-management',
-                    component: () => import('@/views/pages/Menu/MenuManagement.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
-                },
+
                 {
                     path: '/kitchen',
                     name: 'kitchen-display',
