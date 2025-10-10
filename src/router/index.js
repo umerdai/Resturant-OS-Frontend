@@ -18,10 +18,13 @@ const router = createRouter({
                 {
                     path: '/analytics',
                     name: 'Analytics',
-                    component: () => import('@/views/pages/Analytics/AnalyticsLayout.vue'),
-                    meta: { roles: ['admin', 'manager'] }
+                    component: () => import('@/views/pages/Analytics/AnalyticsLayout.vue')
                 },
-
+                {
+                    path: '/analytics/sales-prediction-daily',
+                    name: 'sales-prediction-daily',
+                    component: () => import('@/views/pages/Analytics/Sales-Analytics-Daily.vue')
+                },
                 {
                     path: '/statistics',
                     name: 'Statistics',
