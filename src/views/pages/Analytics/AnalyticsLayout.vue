@@ -18,7 +18,7 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/sales-prediction-weekly')"
 >
   <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
@@ -28,7 +28,7 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/smart-order-assistant')"
 >
   <i class="pi pi-android text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">

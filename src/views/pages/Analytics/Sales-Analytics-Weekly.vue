@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-xl font-semibold mb-4">📊 Daily Sales Prediction</h2>
+    <h2 class="text-xl font-semibold mb-4">Weekly Sales Prediction</h2>
 
     <!-- Controls -->
     <div class="flex flex-wrap align-items-center gap-3 mb-4">

@@ -56,7 +56,7 @@ const logout = () => {
                     </g>
                 </svg>
 
-                <span>SAKAI</span>
+                <span>Veronica</span>
             </router-link>
         </div>
 

@@ -26,6 +26,16 @@ const router = createRouter({
                     component: () => import('@/views/pages/Analytics/Sales-Analytics-Daily.vue')
                 },
                 {
+                    path: '/analytics/sales-prediction-weekly',
+                    name: 'sales-prediction-weekly',
+                    component: () => import('@/views/pages/Analytics/Sales-Analytics-Weekly.vue')
+                },
+                {
+                    path: '/analytics/smart-order-assistant',
+                    name: 'smart-order-assistan',
+                    component: () => import('@/views/pages/Analytics/Smart-Order-Assistant.vue')
+                },
+                {
                     path: '/statistics',
                     name: 'Statistics',
                     component: () => import('@/views/pages/Statistics/StatisticsLayout.vue'),
