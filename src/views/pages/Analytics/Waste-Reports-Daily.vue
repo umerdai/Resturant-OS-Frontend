@@ -7,8 +7,8 @@
                     <i class="pi pi-android"></i>
                 </div>
                 <div>
-                    <h2 class="chat-title">Daily Sales Prediction</h2>
-                    <p class="chat-subtitle">Ask me anything about sales forecasting</p>
+                    <h2 class="chat-title">Daily Wastage Prediction</h2>
+                    <p class="chat-subtitle">Ask me anything about Wastage prediction</p>
                 </div>
             </div>
             <div class="status-indicator">
@@ -27,11 +27,11 @@
                         <i class="pi pi-comments"></i>
                     </div>
                     <h3>Welcome! 👋</h3>
-                    <p>I'm your Daily Sales Prediction Assistant. Ask me about:</p>
+                    <p>I'm your Daily Wastage Prediction Assistant. Ask me about:</p>
                     <div class="suggestion-chips">
-                        <Button label="📈 Sales Trends" size="small" outlined @click="userMessage = 'What are the sales trends for today?'" />
-                        <Button label="💰 Best Selling Items" size="small" outlined @click="userMessage = 'Show me the best selling items'" />
-                        <Button label="📊 Sales by Category" size="small" outlined @click="userMessage = 'What are the sales by category?'" />
+                        <Button label="📈 Wastage Trends" size="small" outlined @click="userMessage = 'What are the wastage trends for today?'" />
+                        <Button label="💰 Most Wasted Items" size="small" outlined @click="userMessage = 'Show me the most wasted items'" />
+                        <Button label="📊 Wastage by Category" size="small" outlined @click="userMessage = 'What are the wastage by category?'" />
                     </div>
                 </div>
 

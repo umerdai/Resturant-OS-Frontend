@@ -219,11 +219,13 @@ const sendMessage = async () => {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(136, 101, 101, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
+    color: var(--p-text-color)
+    
 }
 
 .chat-title {
@@ -236,6 +238,7 @@ const sendMessage = async () => {
     margin: 0;
     font-size: 0.875rem;
     opacity: 0.9;
+    color: var(--p-text-color)
 }
 
 .status-indicator {
@@ -243,9 +246,10 @@ const sendMessage = async () => {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.15);
+       background: rgba(136, 101, 101, 0.2);
     border-radius: 20px;
     backdrop-filter: blur(10px);
+    color: var(--p-text-color)
 }
 
 .status-dot {
@@ -387,7 +391,7 @@ const sendMessage = async () => {
 
 .bot-avatar {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%);
-    color: white;
+    color: var(--p-text-color)
 }
 
 .user-avatar {
@@ -545,11 +549,13 @@ const sendMessage = async () => {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%) !important;
     border: none !important;
     transition: all 0.3s ease;
+    color: rgb(32, 155, 32);
 }
 
 .send-button:hover:not(:disabled) {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.4);
+    color: rgb(132, 199, 132);
 }
 
 .send-button:disabled {
@@ -576,6 +582,7 @@ const sendMessage = async () => {
         width: 40px;
         height: 40px;
         font-size: 1.25rem;
+        color: var(--p-text-color)
     }
 
     .chat-title {

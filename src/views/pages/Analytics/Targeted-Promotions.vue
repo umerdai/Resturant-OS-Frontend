@@ -7,8 +7,8 @@
                     <i class="pi pi-android"></i>
                 </div>
                 <div>
-                    <h2 class="chat-title">Daily Sales Prediction</h2>
-                    <p class="chat-subtitle">Ask me anything about sales forecasting</p>
+                    <h2 class="chat-title">Promotions and Vouchers </h2>
+                    <p class="chat-subtitle">Ask me anything about our promotions and discounts</p>
                 </div>
             </div>
             <div class="status-indicator">
@@ -27,11 +27,11 @@
                         <i class="pi pi-comments"></i>
                     </div>
                     <h3>Welcome! 👋</h3>
-                    <p>I'm your Daily Sales Prediction Assistant. Ask me about:</p>
+                    <p>I'm your Promotions and Vouchers Assistant. Ask me about:</p>
                     <div class="suggestion-chips">
-                        <Button label="📈 Sales Trends" size="small" outlined @click="userMessage = 'What are the sales trends for today?'" />
-                        <Button label="💰 Best Selling Items" size="small" outlined @click="userMessage = 'Show me the best selling items'" />
-                        <Button label="📊 Sales by Category" size="small" outlined @click="userMessage = 'What are the sales by category?'" />
+                        <Button label="📈 Active Promotions" size="small" outlined @click="userMessage = 'how many promotions are active?'" />
+                        <Button label="💰 Vouchers Next Week" size="small" outlined @click="userMessage = 'how many vouchers should I give out next week?'" />
+                        <Button label="📊 Profit Increase" size="small" outlined @click="userMessage = 'what is the increase in profit due to our promotions and vouchers?'" />
                     </div>
                 </div>
 

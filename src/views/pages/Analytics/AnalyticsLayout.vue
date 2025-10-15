@@ -38,9 +38,9 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/waste-reduction')"
 >
-  <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
+  <i class="pi pi-trash text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
     <div class="text-lg font-semibold">Waste Reduction</div>
     <div class="text-sm opacity-80">(For food waste)</div>
@@ -48,9 +48,9 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/menu-insights')"
 >
-  <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
+  <i class="pi pi-book text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
     <div class="text-lg font-semibold">Menu Insights</div>
     <div class="text-sm opacity-80">(For menu optimization)</div>
@@ -58,9 +58,9 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/inventory-prediction')"
 >
-  <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
+  <i class="pi pi-warehouse text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
     <div class="text-lg font-semibold">Inventory Prediction</div>
     <div class="text-sm opacity-80">(For stock management)</div>
@@ -68,9 +68,9 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/targeted-promotions')"
 >
-  <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
+  <i class="pi pi-user text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
     <div class="text-lg font-semibold">Targeted Promotions</div>
     <div class="text-sm opacity-80">(For specific customer segments)</div>
@@ -78,9 +78,9 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/sales-reports-daily')"
 >
-  <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
+  <i class="pi pi-chart-scatter text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
     <div class="text-lg font-semibold">Daily Sales Reports</div>
     <div class="text-sm opacity-80">(For daily sales performance)</div>
@@ -88,9 +88,9 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/sales-reports-weekly')"
 >
-  <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
+  <i class="pi pi pi-chart-scatter text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
     <div class="text-lg font-semibold">Weekly Sales Reports</div>
     <div class="text-sm opacity-80">(For weekly sales performance)</div>
@@ -98,9 +98,9 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/waste-reports-daily')"
 >
-  <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
+  <i class="pi pi-chart-bar text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
     <div class="text-lg font-semibold">Daily Waste Reports</div>
     <div class="text-sm opacity-80">(For daily waste performance)</div>
@@ -108,9 +108,9 @@ import Button from 'primevue/button';
 </Button>
 <Button
   class="AI-buttons"
-  @click="$router.push('/analytics/sales-prediction')"
+  @click="$router.push('/analytics/waste-reports-weekly')"
 >
-  <i class="pi pi-chart-line text-3xl" style="font-size: 1.5rem;"></i>
+  <i class="pi pi-chart-bar text-3xl" style="font-size: 1.5rem;"></i>
   <div class="text-center">
     <div class="text-lg font-semibold">Weekly Waste Reports</div>
     <div class="text-sm opacity-80">(For weekly waste performance)</div>
@@ -128,7 +128,7 @@ import Button from 'primevue/button';
   align-items: center;
   justify-content: center;
   gap: 0.5rem; /* gap-2 */
-  width: 10rem; /* w-40 */
+  width: 12rem; /* w-40 */
   height: 10rem; /* h-32 */
   padding: 1rem; /* p-4 */
   background-color: var(--p-button-primary-background); /* bg-blue-500 */

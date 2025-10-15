@@ -7,8 +7,8 @@
                     <i class="pi pi-android"></i>
                 </div>
                 <div>
-                    <h2 class="chat-title">Daily Sales Prediction</h2>
-                    <p class="chat-subtitle">Ask me anything about sales forecasting</p>
+                    <h2 class="chat-title">Weekly Wastage Prediction</h2>
+                    <p class="chat-subtitle">Ask me anything about Wastage prediction</p>
                 </div>
             </div>
             <div class="status-indicator">
@@ -27,11 +27,11 @@
                         <i class="pi pi-comments"></i>
                     </div>
                     <h3>Welcome! 👋</h3>
-                    <p>I'm your Daily Sales Prediction Assistant. Ask me about:</p>
+                    <p>I'm your weekly wastage prediction Assistant. Ask me about:</p>
                     <div class="suggestion-chips">
-                        <Button label="📈 Sales Trends" size="small" outlined @click="userMessage = 'What are the sales trends for today?'" />
-                        <Button label="💰 Best Selling Items" size="small" outlined @click="userMessage = 'Show me the best selling items'" />
-                        <Button label="📊 Sales by Category" size="small" outlined @click="userMessage = 'What are the sales by category?'" />
+                        <Button label="📈 this week's wastage" size="small" outlined @click="userMessage = 'What are the wastage trends for this week?'" />
+                        <Button label="💰 Most Wasted Items" size="small" outlined @click="userMessage = 'Show me the most wasted items'" />
+                        <Button label="📊 Wastage by Category" size="small" outlined @click="userMessage = 'What are the wastage by category?'" />
                     </div>
                 </div>
 
@@ -95,8 +95,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import axios from 'axios';
+import { ref } from 'vue';
 
 // Chat state
 const messages = ref([]);
@@ -224,8 +224,7 @@ const sendMessage = async () => {
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: var(--p-text-color)
-    
+    color: var(--p-text-color);
 }
 
 .chat-title {
@@ -238,7 +237,7 @@ const sendMessage = async () => {
     margin: 0;
     font-size: 0.875rem;
     opacity: 0.9;
-    color: var(--p-text-color)
+    color: var(--p-text-color);
 }
 
 .status-indicator {
@@ -246,10 +245,10 @@ const sendMessage = async () => {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-       background: rgba(136, 101, 101, 0.2);
+    background: rgba(136, 101, 101, 0.2);
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    color: var(--p-text-color)
+    color: var(--p-text-color);
 }
 
 .status-dot {
@@ -391,7 +390,7 @@ const sendMessage = async () => {
 
 .bot-avatar {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%);
-    color: var(--p-text-color)
+    color: var(--p-text-color);
 }
 
 .user-avatar {
@@ -582,7 +581,7 @@ const sendMessage = async () => {
         width: 40px;
         height: 40px;
         font-size: 1.25rem;
-        color: var(--p-text-color)
+        color: var(--p-text-color);
     }
 
     .chat-title {

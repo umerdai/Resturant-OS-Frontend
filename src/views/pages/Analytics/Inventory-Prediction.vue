@@ -7,8 +7,8 @@
                     <i class="pi pi-android"></i>
                 </div>
                 <div>
-                    <h2 class="chat-title">Daily Sales Prediction</h2>
-                    <p class="chat-subtitle">Ask me anything about sales forecasting</p>
+                    <h2 class="chat-title">Inventory Management</h2>
+                    <p class="chat-subtitle">Ask me anything about our inventory and stock levels</p>
                 </div>
             </div>
             <div class="status-indicator">
@@ -27,11 +27,11 @@
                         <i class="pi pi-comments"></i>
                     </div>
                     <h3>Welcome! 👋</h3>
-                    <p>I'm your Daily Sales Prediction Assistant. Ask me about:</p>
+                    <p>I'm your Inventory Management Assistant. Ask me about:</p>
                     <div class="suggestion-chips">
-                        <Button label="📈 Sales Trends" size="small" outlined @click="userMessage = 'What are the sales trends for today?'" />
-                        <Button label="💰 Best Selling Items" size="small" outlined @click="userMessage = 'Show me the best selling items'" />
-                        <Button label="📊 Sales by Category" size="small" outlined @click="userMessage = 'What are the sales by category?'" />
+                        <Button label="📦 Stock Levels" size="small" outlined @click="userMessage = 'What are the current stock levels?'" />
+                        <Button label="🔔 Restock Alerts" size="small" outlined @click="userMessage = 'Show me the restock alerts'" />
+                        <Button label="📊 Inventory Trends" size="small" outlined @click="userMessage = 'What are the inventory trends?'" />
                     </div>
                 </div>
 

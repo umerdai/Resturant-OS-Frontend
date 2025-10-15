@@ -36,6 +36,46 @@ const router = createRouter({
                     component: () => import('@/views/pages/Analytics/Smart-Order-Assistant.vue')
                 },
                 {
+                    path: '/analytics/waste-reduction',
+                    name: 'waste-reduction',
+                    component: () => import('@/views/pages/Analytics/Waste-Reduction.vue')
+                },
+                {
+                    path: '/analytics/menu-insights',
+                    name: 'menu-insights',
+                    component: () => import('@/views/pages/Analytics/Menu-Insights.vue')
+                },
+                {
+                    path: '/analytics/inventory-prediction',
+                    name: 'inventory-prediction',
+                    component: () => import('@/views/pages/Analytics/Inventory-Prediction.vue')
+                },
+                {
+                    path: '/analytics/targeted-promotions',
+                    name: 'targeted-promotions',
+                    component: () => import('@/views/pages/Analytics/Targeted-Promotions.vue')
+                },
+                {
+                    path: '/analytics/sales-reports-daily',
+                    name: 'sales-reports-daily',
+                    component: () => import('@/views/pages/Analytics/Sales-Reports-Daily.vue')
+                },
+                {
+                    path: '/analytics/sales-reports-weekly',
+                    name: 'sales-reports-weekly',
+                    component: () => import('@/views/pages/Analytics/Sales-Reports-Weekly.vue')
+                },
+                {
+                    path: '/analytics/waste-reports-daily',
+                    name: 'waste-reports-daily',
+                    component: () => import('@/views/pages/Analytics/Waste-Reports-Daily.vue')
+                },
+                {
+                    path: '/analytics/waste-reports-weekly',
+                    name: 'waste-reports-weekly',
+                    component: () => import('@/views/pages/Analytics/Waste-Reports-Weekly.vue')
+                },
+                {
                     path: '/statistics',
                     name: 'Statistics',
                     component: () => import('@/views/pages/Statistics/StatisticsLayout.vue'),
