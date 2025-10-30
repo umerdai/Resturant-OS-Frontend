@@ -34,7 +34,7 @@ const handleLogin = async () => {
         return;
     }
 
-    const result = await authStore.login({
+    const result = await authStore.Signup({
         email: email.value,
         password: password.value
     });
@@ -83,20 +83,6 @@ const useDemoCredentials = (user) => {
     password.value = user.password;
 };
 
-const navigateToSignup = () => {
-    try {
-        router.push('/auth/signup');
-    } catch (error) {
-        console.error('Navigation error:', error);
-        toast.add({
-            severity: 'error',
-            summary: 'Navigation Error',
-            detail: 'Unable to navigate to signup page',
-            life: 3000
-        });
-    }
-};
-
 // Initialize auth on component mount
 authStore.initializeAuth();
 </script>
@@ -108,7 +94,7 @@ authStore.initializeAuth();
         <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[90vw] min-h-[70vh] overflow-hidden">
             <div class="flex flex-col items-center justify-center " style="height: 94vh; margin-top:40px" >
                 <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
-                    <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20 min-h-[70vh]" style="border-radius: 53px; height: 20px;">
+                    <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20 min-h-[70vh]" style="border-radius: 53px; height=20px">
                         <div class="text-center mb-8">
                             <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-8 w-16 shrink-0 mx-auto">
                                 <path
@@ -128,7 +114,7 @@ authStore.initializeAuth();
                                 </g>
                             </svg>
                             <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Veronica!</div>
-                            <span class="text-muted-color font-medium">Sign in to continue</span>
+                            <span class="text-muted-color font-medium">Sign up to continue</span>
                         </div>
 
                         <div>
@@ -138,6 +124,16 @@ authStore.initializeAuth();
                             <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
                             <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="mb-4" fluid :feedback="false"></Password>
 
+                            
+                            
+                            <div class="mb-4">
+                                <label for="fullname" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Full Name</label>
+                                <InputText id="fullname" type="text" placeholder="Full Name" class="w-full md:w-[30rem] mb-4" v-model="fullName" />
+                                
+                                <label for="role" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Role</label>
+                                <Dropdown id="role" v-model="selectedRole" :options="roleOptions" optionLabel="label" optionValue="value" placeholder="Select a Role" class="w-full md:w-[30rem] mb-4" />
+                            </div>
+                            
                             <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                                 <div class="flex items-center">
                                     <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
@@ -145,21 +141,11 @@ authStore.initializeAuth();
                                 </div>
                                 <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
                             </div>
-                            <Button label="Sign In" class="w-full mb-4" @click="handleLogin" :loading="authStore.isLoading" />
-                            <div class="text-center mb-4">
-                                <span class="text-muted-color">Don't have an account? </span>
-                                <Button 
-                                    label="Create Account" 
-                                    link 
-                                    class="p-0 text-primary font-medium" 
-                                    @click="navigateToSignup" 
-                                />
-                            </div>
+                            <Button label="Sign Up" class="w-full mb-4" @click="handleLogin" :loading="authStore.isLoading" />
                             <!-- Demo Credentials Section -->
                             <Divider align="center" class="mb-4">
                                 <span class="text-sm text-muted-color px-2 bg-surface-0 dark:bg-surface-900">Demo Credentials</span>
                             </Divider>
-
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                                 <Button v-for="user in demoUsers" :key="user.role" :label="`${user.role}: ${user.email}`" outlined size="small" class="text-xs p-2" @click="useDemoCredentials(user)" />
                             </div>

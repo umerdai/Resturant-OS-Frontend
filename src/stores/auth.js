@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
     // State
@@ -34,20 +34,57 @@ export const useAuthStore = defineStore('auth', () => {
     const login = async (credentials) => {
         isLoading.value = true;
         try {
-            // Simulate API call - replace with actual API
-            const response = await simulateLogin(credentials);
+            // Make actual API call to login endpoint
+            const response = await fetch('http://localhost:8000/auth/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(credentials)
+            });
 
-            if (response.success) {
-                user.value = response.user;
-                token.value = response.token;
-                localStorage.setItem('pos_token', response.token);
-                localStorage.setItem('pos_user', JSON.stringify(response.user));
+            const data = await response.json();
+
+            if (response.ok && data.token) {
+                user.value = data.user;
+                token.value = data.token;
+                localStorage.setItem('pos_token', data.token);
+                localStorage.setItem('pos_user', JSON.stringify(data.user));
                 return { success: true };
             } else {
-                throw new Error(response.message);
+                throw new Error(data.message || 'Login failed');
             }
         } catch (error) {
-            return { success: false, message: error.message };
+            return { success: false, message: error.message || 'Network error occurred' };
+        } finally {
+            isLoading.value = false;
+        }
+    };
+    const Signup = async (userData) => {
+        isLoading.value = true;
+        try {
+            // Make actual API call to signup endpoint
+            const response = await fetch('http://localhost:8000/auth/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.token) {
+                user.value = data.user;
+                token.value = data.token;
+                localStorage.setItem('pos_token', data.token);
+                localStorage.setItem('pos_user', JSON.stringify(data.user));
+                return { success: true };
+            } else {
+                throw new Error(data.message || 'Signup failed');
+            }
+        } catch (error) {
+            return { success: false, message: error.message || 'Network error occurred' };
         } finally {
             isLoading.value = false;
         }
@@ -149,37 +186,6 @@ export const useAuthStore = defineStore('auth', () => {
     };
 
     // Mock API functions (replace with actual API calls)
-    const simulateLogin = async (credentials) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                // Mock users database
-                const users = [
-                    { id: 1, email: 'admin@pos.com', password: 'admin123', name: 'Admin User', role: 'admin' },
-                    { id: 2, email: 'manager@pos.com', password: 'manager123', name: 'Manager User', role: 'manager' },
-                    { id: 3, email: 'waiter@pos.com', password: 'waiter123', name: 'Waiter User', role: 'waiter' },
-                    { id: 4, email: 'cashier@pos.com', password: 'cashier123', name: 'Cashier User', role: 'cashier' },
-                    { id: 5, email: 'kitchen@pos.com', password: 'kitchen123', name: 'Kitchen Staff', role: 'kitchen_staff' }
-                ];
-
-                const user = users.find((u) => u.email === credentials.email && u.password === credentials.password);
-
-                if (user) {
-                    // eslint-disable-next-line no-unused-vars
-                    const { password, ...userWithoutPassword } = user;
-                    resolve({
-                        success: true,
-                        user: userWithoutPassword,
-                        token: 'mock-jwt-token-' + user.id
-                    });
-                } else {
-                    resolve({
-                        success: false,
-                        message: 'Invalid email or password'
-                    });
-                }
-            }, 1000);
-        });
-    };
 
     // eslint-disable-next-line no-unused-vars
     const simulateRegister = async (userData) => {
@@ -240,6 +246,7 @@ export const useAuthStore = defineStore('auth', () => {
         // Actions
         login,
         register,
+        Signup,
         logout,
         updateProfile,
         changePassword,

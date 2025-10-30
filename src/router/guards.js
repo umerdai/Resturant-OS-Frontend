@@ -10,8 +10,8 @@ export function createAuthGuard() {
         }
 
         // Public routes (match by both name and path)
-        const publicRoutes = ['/auth/login', '/auth/register', '/landing'];
-        const publicNames = ['login', 'register', 'landing'];
+        const publicRoutes = ['/auth/login', '/auth/signup', '/landing'];
+        const publicNames = ['login', 'signup', 'landing'];
 
         if (publicRoutes.includes(to.path) || publicNames.includes(to.name)) {
             if (authStore.isAuthenticated) {
