@@ -20,9 +20,6 @@ const newItem = ref({
   Cost_price: null,
   Sale_price: null,
   unit: null,
-  supplier: null,
-  expiryDate: null,
-  reorderLevel: null,
   barcode: '',
   location: '',
   ingredients: [] // ✅ Initialize ingredients array

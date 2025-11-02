@@ -1,11 +1,10 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
+import webSocketService from '@/services/websocket';
+import { useAuthStore } from '@/stores/auth';
+import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useToast } from 'primevue/usetoast';
-import { useAuthStore } from '@/stores/auth';
-import webSocketService from '@/services/websocket';
-import axios from 'axios';
 
 const router = useRouter();
 const toast = useToast();
@@ -106,9 +105,9 @@ authStore.initializeAuth();
         <FloatingConfigurator />
         <Toast />
         <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[90vw] min-h-[70vh] overflow-hidden">
-            <div class="flex flex-col items-center justify-center " style="height: 94vh; margin-top:40px" >
+            <div class="flex flex-col items-center justify-center" style="height: 94vh; margin-top: 40px">
                 <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
-                    <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20 min-h-[70vh]" style="border-radius: 53px; height: 20px;">
+                    <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20 min-h-[70vh]" style="border-radius: 53px; height: 20px">
                         <div class="text-center mb-8">
                             <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-8 w-16 shrink-0 mx-auto">
                                 <path
@@ -148,12 +147,7 @@ authStore.initializeAuth();
                             <Button label="Sign In" class="w-full mb-4" @click="handleLogin" :loading="authStore.isLoading" />
                             <div class="text-center mb-4">
                                 <span class="text-muted-color">Don't have an account? </span>
-                                <Button 
-                                    label="Create Account" 
-                                    link 
-                                    class="p-0 text-primary font-medium" 
-                                    @click="navigateToSignup" 
-                                />
+                                <Button label="Create Account" link class="p-0 text-primary font-medium" @click="navigateToSignup" />
                             </div>
                             <!-- Demo Credentials Section -->
                             <Divider align="center" class="mb-4">

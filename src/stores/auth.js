@@ -34,6 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
     const login = async (credentials) => {
         isLoading.value = true;
         try {
+            console.log('Attempting login with credentials:', credentials);
             // Make actual API call to login endpoint
             const response = await fetch('http://localhost:8000/auth/login/', {
                 method: 'POST',
@@ -50,6 +51,8 @@ export const useAuthStore = defineStore('auth', () => {
                 token.value = data.token;
                 localStorage.setItem('pos_token', data.token);
                 localStorage.setItem('pos_user', JSON.stringify(data.user));
+                localStorage.setItem('pos_user_role', data.user.role);
+                localStorage.setItem('restaurant_id', data.user.restaurant_id);
                 return { success: true };
             } else {
                 throw new Error(data.message || 'Login failed');

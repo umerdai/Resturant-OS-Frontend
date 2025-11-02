@@ -6,9 +6,9 @@ import Button from 'primevue/button';
     <div class="p-4">
         <h2 class="mb-4">Menu Management</h2>
         <div class="flex gap-2 mb-4">
-            <Button label="Add Item" @click="$router.push('/menu/add')" />
+            <Button label="Add New Menu Item" @click="$router.push('/menu/add')" />
             <Button label="View Menu" @click="$router.push('/menu/list')" />
-            <Button label="Add New Item" @click="$router.push('/menu/NewItem')" />
+            <!--<Button label="Add New Item" @click="$router.push('/menu/NewItem')" />-->
         </div>
         <router-view />
     </div>
