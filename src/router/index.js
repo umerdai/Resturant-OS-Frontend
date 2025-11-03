@@ -14,12 +14,34 @@ const router = createRouter({
                     name: 'dashboard',
                     component: () => import('@/views/Dashboard.vue')
                 },
-
+                {
+                    path: '/restaurant',
+                    name: 'Restaurant',
+                    component: () => import('@/views/pages/Restaurants/RestaurantLayout.vue')
+                },
+                {
+                    path: '/category',
+                    name: 'Category',
+                    component: () => import('@/views/pages/Categories/CategoryLayout.vue')
+                },
+                {
+                    path: '/categories/create',
+                    name: 'CreateCategory',
+                    component: () => import('@/views/pages/Categories/CreateCategory.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
+                },
+                {
+                    path: '/restaurant/create',
+                    name: 'CreateRestaurant',
+                    component: () => import('@/views/pages/Restaurants/CreateRestaurant.vue'),
+                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'owner'] }
+                },
                 {
                     path: '/analytics',
                     name: 'Analytics',
                     component: () => import('@/views/pages/Analytics/AnalyticsLayout.vue')
                 },
+
                 {
                     path: '/analytics/sales-prediction-daily',
                     name: 'sales-prediction-daily',
@@ -79,7 +101,7 @@ const router = createRouter({
                     path: '/statistics',
                     name: 'Statistics',
                     component: () => import('@/views/pages/Statistics/StatisticsLayout.vue'),
-                    meta: { roles: ['admin', 'manager'] }
+                    meta: { roles: ['owner', 'admin', 'manager'] }
                 },
                 {
                     path: '/inventory',
@@ -246,74 +268,74 @@ const router = createRouter({
                     path: '/tables',
                     name: 'tables',
                     component: () => import('@/views/pages/tables/TableManagement.vue'),
-                    meta: { roles: ['admin', 'manager', 'waiter'] }
+                    meta: { roles: ['owner', 'admin', 'manager', 'waiter'] }
                 },
                 {
                     path: '/orders/management',
                     name: 'order-management',
                     component: () => import('@/views/pages/orders/OrderManagement.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'waiter', 'cashier'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager', 'waiter', 'cashier'] }
                 },
 
                 {
                     path: '/kitchen',
                     name: 'kitchen-display',
                     component: () => import('@/views/KitchenManagement.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'kitchen'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager', 'kitchen'] }
                 },
                 {
                     path: '/staff',
                     name: 'staff-management',
                     component: () => import('@/views/StaffManagement.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
                 },
                 {
                     path: '/payments',
                     name: 'payment-management',
                     component: () => import('@/views/PaymentManagement.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'cashier'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager', 'cashier'] }
                 },
                 {
                     path: '/billing',
                     name: 'billing-payment',
                     component: () => import('@/views/pages/billing/BillingPayment.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager', 'cashier'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager', 'cashier'] }
                 },
                 {
                     path: '/inventory-management',
                     name: 'inventory-management',
                     component: () => import('@/views/InventoryManagement.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
                 },
                 {
                     path: '/enhanced-inventory',
                     name: 'enhanced-inventory',
                     component: () => import('@/views/EnhancedInventoryPage.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
                 },
                 {
                     path: '/ai-usecases',
                     name: 'ai-usecases',
                     component: () => import('@/views/AIUseCases.vue'),
-                    meta: { requiresAuth: false, roles: ['admin', 'manager'] }
+                    meta: { requiresAuth: false, roles: ['owner', 'admin', 'manager'] }
                 },
                 {
                     path: '/reports-analytics',
                     name: 'reports-analytics',
                     component: () => import('@/views/ReportsAnalytics.vue'),
-                    meta: { requiresAuth: true, roles: ['admin', 'manager'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
                 },
                 {
                     path: '/admin-settings',
                     name: 'admin-settings',
                     component: () => import('@/views/AdminSettings.vue'),
-                    meta: { requiresAuth: true, roles: ['admin'] }
+                    meta: { requiresAuth: true, roles: ['owner', 'admin'] }
                 },
                 {
                     path: '/orders/new/:tableId?',
                     name: 'newOrder',
                     component: () => import('@/views/pages/orders/NewOrder.vue'),
-                    meta: { roles: ['admin', 'manager', 'waiter'] }
+                    meta: { roles: ['owner', 'admin', 'manager', 'waiter'] }
                 }
             ]
         },

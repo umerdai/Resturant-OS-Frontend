@@ -10,8 +10,8 @@ const router = useRouter();
 const toast = useToast();
 const authStore = useAuthStore();
 
-const email = ref('admin@pos.com');
-const password = ref('admin123');
+const email = ref('cashier@restaurant.com');
+const password = ref('password123');
 const checked = ref(false);
 
 const demoUsers = [

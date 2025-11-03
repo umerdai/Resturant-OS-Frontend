@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     // User roles enum
     const USER_ROLES = {
+        OWNER: 'owner',
         ADMIN: 'admin',
         MANAGER: 'manager',
         WAITER: 'waiter',
@@ -22,13 +23,13 @@ export const useAuthStore = defineStore('auth', () => {
     const userRole = computed(() => user.value?.role || null);
     const userName = computed(() => user.value?.name || '');
     const userEmail = computed(() => user.value?.email || '');
-    const canManageUsers = computed(() => ['admin', 'manager'].includes(userRole.value));
-    const canManageInventory = computed(() => ['admin', 'manager'].includes(userRole.value));
-    const canManageMenu = computed(() => ['admin', 'manager'].includes(userRole.value));
-    const canViewReports = computed(() => ['admin', 'manager'].includes(userRole.value));
-    const canProcessPayments = computed(() => ['admin', 'manager', 'cashier'].includes(userRole.value));
-    const canTakeOrders = computed(() => ['admin', 'manager', 'waiter'].includes(userRole.value));
-    const canAccessKitchen = computed(() => ['admin', 'manager', 'kitchen_staff'].includes(userRole.value));
+    const canManageUsers = computed(() => ['owner', 'admin', 'manager'].includes(userRole.value));
+    const canManageInventory = computed(() => ['owner', 'admin', 'manager'].includes(userRole.value));
+    const canManageMenu = computed(() => ['owner', 'admin', 'manager'].includes(userRole.value));
+    const canViewReports = computed(() => ['owner', 'admin', 'manager'].includes(userRole.value));
+    const canProcessPayments = computed(() => ['owner', 'admin', 'manager', 'cashier'].includes(userRole.value));
+    const canTakeOrders = computed(() => ['owner', 'admin', 'manager', 'waiter'].includes(userRole.value));
+    const canAccessKitchen = computed(() => ['owner', 'admin', 'manager', 'kitchen_staff'].includes(userRole.value));
 
     // Actions
     const login = async (credentials) => {
@@ -51,8 +52,15 @@ export const useAuthStore = defineStore('auth', () => {
                 token.value = data.token;
                 localStorage.setItem('pos_token', data.token);
                 localStorage.setItem('pos_user', JSON.stringify(data.user));
+                localStorage.setItem('user_id', data.user.id);
                 localStorage.setItem('pos_user_role', data.user.role);
-                localStorage.setItem('restaurant_id', data.user.restaurant_id);
+
+                // Store restaurant info if available
+                if (data.accessible_restaurants && data.accessible_restaurants.length > 0) {
+                    localStorage.setItem('restaurant_id', data.accessible_restaurants[0].id);
+                }
+
+                console.log('Login successful, user role:', data.user.role);
                 return { success: true };
             } else {
                 throw new Error(data.message || 'Login failed');
@@ -93,6 +101,11 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
     const hasPermission = (permission) => {
+        // Owner has all permissions
+        if (userRole.value === 'owner') {
+            return true;
+        }
+
         switch (permission) {
             case 'manageUsers':
                 return ['admin', 'manager'].includes(userRole.value);
@@ -136,6 +149,9 @@ export const useAuthStore = defineStore('auth', () => {
         shiftStatus.value = 'off-duty';
         localStorage.removeItem('pos_token');
         localStorage.removeItem('pos_user');
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('pos_user_role');
+        localStorage.removeItem('restaurant_id');
     };
 
     const updateProfile = async (profileData) => {
