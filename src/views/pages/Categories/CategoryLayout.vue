@@ -114,13 +114,9 @@ onMounted(() => {
                             </div>
                         </div>
 
-                        <div class="flex items-center" v-if="category.sort_order !== undefined">
-                            <i class="pi pi-sort-numeric-down mr-2 text-gray-500"></i>
-                            <span class="text-sm text-gray-600 dark:text-gray-400">Sort Order:</span>
-                            <span class="ml-2 font-medium">{{ category.sort_order }}</span>
-                        </div>
+                        
 
-                        <div class="text-xs text-gray-400 mt-4">ID: {{ category.id }}</div>
+                        <div class="text-xs text-gray-400 mt-4">ID: {{ category.description }}</div>
                     </div>
                 </template>
 
@@ -151,50 +147,7 @@ onMounted(() => {
             <p class="mt-4 text-gray-600">Loading categories...</p>
         </div>
 
-        <!-- Data Table View (Alternative) -->
-        <Card class="mt-6" v-if="categories.length > 0">
-            <template #header>
-                <div class="p-4 border-b">
-                    <h3 class="text-lg font-semibold">Category List</h3>
-                </div>
-            </template>
-
-            <template #content>
-                <DataTable :value="categories" :loading="isLoading" paginator :rows="10" responsiveLayout="scroll" class="p-datatable-sm">
-                    <Column field="name" header="Category Name" sortable>
-                        <template #body="slotProps">
-                            <div class="flex items-center">
-                                <div v-if="slotProps.data.color" class="w-3 h-3 rounded-full border mr-2" :style="{ backgroundColor: slotProps.data.color }"></div>
-                                <span class="font-medium">{{ slotProps.data.name }}</span>
-                            </div>
-                        </template>
-                    </Column>
-
-                    <Column field="description" header="Description" sortable>
-                        <template #body="slotProps">
-                            <span class="text-sm">{{ slotProps.data.description || '-' }}</span>
-                        </template>
-                    </Column>
-
-                    <Column field="sort_order" header="Sort Order" sortable></Column>
-
-                    <Column field="is_active" header="Status" sortable>
-                        <template #body="slotProps">
-                            <Badge :value="slotProps.data.is_active ? 'Active' : 'Inactive'" :severity="slotProps.data.is_active ? 'success' : 'danger'" />
-                        </template>
-                    </Column>
-
-                    <Column header="Actions">
-                        <template #body="slotProps">
-                            <div class="flex gap-2">
-                                <Button icon="pi pi-eye" size="small" class="p-button-text" @click="viewCategory(slotProps.data)" v-tooltip="'View Details'" />
-                                <Button icon="pi pi-cog" size="small" class="p-button-text" @click="manageCategory(slotProps.data)" v-tooltip="'Manage Category'" />
-                            </div>
-                        </template>
-                    </Column>
-                </DataTable>
-            </template>
-        </Card>
+       
     </div>
 </template>
 

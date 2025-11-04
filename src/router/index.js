@@ -25,6 +25,23 @@ const router = createRouter({
                     component: () => import('@/views/pages/Categories/CategoryLayout.vue')
                 },
                 {
+                    path: '/branches',
+                    name: 'Branches',
+                    component: () => import('@/views/pages/Branches/BranchesLayout.vue')
+                },
+                {
+                    path: '/branches/create',
+                    name: 'CreateBranch',
+                    component: () => import('@/views/pages/Branches/CreateBranch.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
+                },
+                {
+                    path: '/branches/:id/details',
+                    name: 'BranchDetails',
+                    component: () => import('@/views/pages/Branches/BranchDetails.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
+                },
+                {
                     path: '/categories/create',
                     name: 'CreateCategory',
                     component: () => import('@/views/pages/Categories/CreateCategory.vue'),
@@ -162,6 +179,24 @@ const router = createRouter({
                             component: () => import('@/views/pages/Inventory/UpdateInventory.vue')
                         }
                     ]
+                },
+                {
+                    path: '/menu/items',
+                    name: 'MenuItems',
+                    component: () => import('@/views/pages/Menu/MenuItemsLayout.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
+                },
+                {
+                    path: '/menu/items/create',
+                    name: 'CreateMenuItem',
+                    component: () => import('@/views/pages/Menu/CreateMenuItem.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
+                },
+                {
+                    path: '/menu/items/:id/details',
+                    name: 'MenuItemDetails',
+                    component: () => import('@/views/pages/Menu/MenuItemDetails.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
                 },
                 {
                     path: '/sales',

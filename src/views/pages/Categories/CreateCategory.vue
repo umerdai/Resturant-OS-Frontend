@@ -27,25 +27,7 @@
                         <small v-if="errors.description" class="p-error">{{ errors.description }}</small>
                     </div>
 
-                    <!-- Color Picker -->
-                    <div class="form-group">
-                        <label for="color" class="form-label"> Category Color </label>
-                        <div class="flex items-center gap-3">
-                            <ColorPicker v-model="form.color" format="hex" class="color-picker" />
-                            <InputText v-model="form.color" placeholder="#000000" class="flex-1" :class="{ 'p-invalid': errors.color }" />
-                            <div class="w-10 h-10 rounded border-2 border-gray-300" :style="{ backgroundColor: form.color }"></div>
-                        </div>
-                        <small class="text-gray-500">Choose a color to represent this category</small>
-                        <small v-if="errors.color" class="p-error block">{{ errors.color }}</small>
-                    </div>
-
-                    <!-- Sort Order -->
-                    <div class="form-group">
-                        <label for="sortOrder" class="form-label"> Sort Order </label>
-                        <InputNumber id="sortOrder" v-model="form.sort_order" placeholder="0" :min="0" :max="9999" class="w-full" :class="{ 'p-invalid': errors.sort_order }" />
-                        <small class="text-gray-500">Lower numbers appear first in lists</small>
-                        <small v-if="errors.sort_order" class="p-error block">{{ errors.sort_order }}</small>
-                    </div>
+                  
 
                     <!-- Active Status -->
                     <div class="form-group">
@@ -62,7 +44,7 @@
                     <div class="flex justify-end space-x-3 pt-4 form-actions">
                         <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="$router.push('/category')" :disabled="isSubmitting" />
                         <Button label="Reset Form" icon="pi pi-refresh" class="p-button-outlined" @click="resetForm" :disabled="isSubmitting" />
-                        <Button type="submit" label="Create Category" icon="pi pi-check" class="p-button-success" :loading="isSubmitting" />
+                        <Button type="submit" label="Create Category" icon="pi pi-check"  :loading="isSubmitting" />
                     </div>
                 </form>
             </template>
@@ -145,18 +127,18 @@ const createCategory = async () => {
     isSubmitting.value = true;
 
     try {
-        const userId = localStorage.getItem('user_id');
+        const userId = localStorage.getItem('pos_token');
+        const restaurantId = localStorage.getItem('restaurant_id');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
 
         // Prepare the data to send
         const categoryData = {
+            restaurant:restaurantId,
             name: form.name.trim(),
             description: form.description.trim() || null,
-            color: form.color || null,
-            sort_order: form.sort_order,
-            is_active: form.is_active
+      
         };
 
         const response = await fetch('http://localhost:8000/categories/', {
