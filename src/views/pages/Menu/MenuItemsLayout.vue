@@ -90,13 +90,9 @@
                         <!-- Availability Toggle -->
                         <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
                             <span class="text-sm font-medium">Available</span>
-                            <InputSwitch 
-                                v-model="item.is_available" 
-                                @change="toggleAvailability(item)"
-                                :disabled="item.isToggling"
-                            />
+                            <InputSwitch v-model="item.is_available" @change="toggleAvailability(item)" :disabled="item.isToggling" />
                         </div>
-                        
+
                         <!-- Action Buttons -->
                         <div class="flex gap-2 justify-between">
                             <Button label="View Details" icon="pi pi-eye" class="p-button-info flex-1" @click="viewMenuItem(item)" />
@@ -147,8 +143,8 @@ import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Dialog from 'primevue/dialog';
 import Dropdown from 'primevue/dropdown';
-import InputText from 'primevue/inputtext';
 import InputSwitch from 'primevue/inputswitch';
+import InputText from 'primevue/inputtext';
 import { useToast } from 'primevue/usetoast';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -201,7 +197,7 @@ const filteredMenuItems = computed(() => {
 const fetchMenuItems = async () => {
     isLoading.value = true;
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
@@ -210,7 +206,7 @@ const fetchMenuItems = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -235,14 +231,14 @@ const fetchMenuItems = async () => {
 
 const fetchCategories = async () => {
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) return;
 
         const response = await fetch('http://localhost:8000/categories/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -282,7 +278,7 @@ const deleteMenuItem = async () => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -321,9 +317,9 @@ const clearFilters = () => {
 const toggleAvailability = async (item) => {
     // Set a loading state for this specific item
     item.isToggling = true;
-    
+
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
@@ -332,20 +328,20 @@ const toggleAvailability = async (item) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             },
             body: JSON.stringify({ item_id: item.id })
         });
 
         if (response.ok) {
             const data = await response.json();
-            
+
             // Update the item's availability status with the response from server
-            const itemIndex = menuItems.value.findIndex(menuItem => menuItem.id === item.id);
+            const itemIndex = menuItems.value.findIndex((menuItem) => menuItem.id === item.id);
             if (itemIndex !== -1) {
                 menuItems.value[itemIndex].is_available = data.is_available;
             }
-            
+
             toast.add({
                 severity: 'success',
                 summary: 'Success',

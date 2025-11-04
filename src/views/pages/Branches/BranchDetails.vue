@@ -256,7 +256,7 @@ const editForm = reactive({
 const fetchBranch = async () => {
     isLoading.value = true;
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
@@ -265,7 +265,7 @@ const fetchBranch = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -366,7 +366,7 @@ const saveBranch = async () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             },
             body: JSON.stringify(editForm)
         });
@@ -415,7 +415,7 @@ const deleteBranch = async () => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 

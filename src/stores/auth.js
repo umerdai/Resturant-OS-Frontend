@@ -4,7 +4,7 @@ import { computed, ref } from 'vue';
 export const useAuthStore = defineStore('auth', () => {
     // State
     const user = ref(null);
-    const token = ref(localStorage.getItem('pos_token'));
+    const token = ref(localStorage.getItem('token'));
     const isLoading = ref(false);
     const shiftStatus = ref('off-duty'); // 'on-duty', 'off-duty', 'break'
 
@@ -47,10 +47,10 @@ export const useAuthStore = defineStore('auth', () => {
 
             const data = await response.json();
 
-            if (response.ok && data.token) {
+            if (response.ok && data.access) {
                 user.value = data.user;
-                token.value = data.token;
-                localStorage.setItem('pos_token', data.token);
+                token.value = data.access;
+                localStorage.setItem('token', data.access);
                 localStorage.setItem('pos_user', JSON.stringify(data.user));
                 localStorage.setItem('user_id', data.user.id);
                 localStorage.setItem('pos_user_role', data.user.role);
@@ -58,6 +58,16 @@ export const useAuthStore = defineStore('auth', () => {
                 // Store restaurant info if available
                 if (data.accessible_restaurants && data.accessible_restaurants.length > 0) {
                     localStorage.setItem('restaurant_id', data.accessible_restaurants[0].id);
+                }
+
+                // Store branch info if available
+                if (data.assigned_branches && data.assigned_branches.length > 0) {
+                    localStorage.setItem('branch_id', data.assigned_branches[0].id);
+                }
+
+                // Store permissions
+                if (data.permissions) {
+                    localStorage.setItem('pos_permissions', JSON.stringify(data.permissions));
                 }
 
                 console.log('Login successful, user role:', data.user.role);
@@ -88,7 +98,7 @@ export const useAuthStore = defineStore('auth', () => {
             if (response.ok && data.token) {
                 user.value = data.user;
                 token.value = data.token;
-                localStorage.setItem('pos_token', data.token);
+                localStorage.setItem('token', data.token);
                 localStorage.setItem('pos_user', JSON.stringify(data.user));
                 return { success: true };
             } else {
@@ -147,11 +157,13 @@ export const useAuthStore = defineStore('auth', () => {
         user.value = null;
         token.value = null;
         shiftStatus.value = 'off-duty';
-        localStorage.removeItem('pos_token');
+        localStorage.removeItem('token');
         localStorage.removeItem('pos_user');
         localStorage.removeItem('user_id');
         localStorage.removeItem('pos_user_role');
         localStorage.removeItem('restaurant_id');
+        localStorage.removeItem('branch_id');
+        localStorage.removeItem('pos_permissions');
     };
 
     const updateProfile = async (profileData) => {

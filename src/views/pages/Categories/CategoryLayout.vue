@@ -2,8 +2,6 @@
 import Badge from 'primevue/badge';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
-import Column from 'primevue/column';
-import DataTable from 'primevue/datatable';
 import { useToast } from 'primevue/usetoast';
 import { onMounted, ref } from 'vue';
 
@@ -15,7 +13,7 @@ const isLoading = ref(false);
 const fetchCategories = async () => {
     isLoading.value = true;
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
@@ -24,7 +22,7 @@ const fetchCategories = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -103,8 +101,6 @@ onMounted(() => {
 
                 <template #content>
                     <div class="space-y-3">
-                       
-
                         <div class="flex items-center" v-if="category.color">
                             <i class="pi pi-palette mr-2 text-gray-500"></i>
                             <span class="text-sm text-gray-600 dark:text-gray-400">Color:</span>
@@ -113,8 +109,6 @@ onMounted(() => {
                                 <span class="font-medium">{{ category.color }}</span>
                             </div>
                         </div>
-
-                        
 
                         <div class="text-xs text-gray-400 mt-4">ID: {{ category.description }}</div>
                     </div>
@@ -146,8 +140,6 @@ onMounted(() => {
             <i class="pi pi-spin pi-spinner text-4xl text-primary-500"></i>
             <p class="mt-4 text-gray-600">Loading categories...</p>
         </div>
-
-       
     </div>
 </template>
 

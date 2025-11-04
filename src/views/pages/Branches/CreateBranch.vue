@@ -163,7 +163,7 @@ const createBranch = async () => {
     isSubmitting.value = true;
 
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
@@ -185,7 +185,7 @@ const createBranch = async () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             },
             body: JSON.stringify(branchData)
         });

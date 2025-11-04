@@ -15,7 +15,7 @@ const isLoading = ref(false);
 const fetchRestaurants = async () => {
     isLoading.value = true;
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
@@ -24,7 +24,7 @@ const fetchRestaurants = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 

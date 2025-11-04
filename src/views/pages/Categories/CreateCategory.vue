@@ -27,8 +27,6 @@
                         <small v-if="errors.description" class="p-error">{{ errors.description }}</small>
                     </div>
 
-                  
-
                     <!-- Active Status -->
                     <div class="form-group">
                         <div class="flex items-center space-x-3">
@@ -44,7 +42,7 @@
                     <div class="flex justify-end space-x-3 pt-4 form-actions">
                         <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="$router.push('/category')" :disabled="isSubmitting" />
                         <Button label="Reset Form" icon="pi pi-refresh" class="p-button-outlined" @click="resetForm" :disabled="isSubmitting" />
-                        <Button type="submit" label="Create Category" icon="pi pi-check"  :loading="isSubmitting" />
+                        <Button type="submit" label="Create Category" icon="pi pi-check" :loading="isSubmitting" />
                     </div>
                 </form>
             </template>
@@ -56,9 +54,7 @@
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Checkbox from 'primevue/checkbox';
-import ColorPicker from 'primevue/colorpicker';
 import Divider from 'primevue/divider';
-import InputNumber from 'primevue/inputnumber';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { useToast } from 'primevue/usetoast';
@@ -127,7 +123,7 @@ const createCategory = async () => {
     isSubmitting.value = true;
 
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         const restaurantId = localStorage.getItem('restaurant_id');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
@@ -135,17 +131,16 @@ const createCategory = async () => {
 
         // Prepare the data to send
         const categoryData = {
-            restaurant:restaurantId,
+            restaurant: restaurantId,
             name: form.name.trim(),
-            description: form.description.trim() || null,
-      
+            description: form.description.trim() || null
         };
 
         const response = await fetch('http://localhost:8000/categories/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             },
             body: JSON.stringify(categoryData)
         });

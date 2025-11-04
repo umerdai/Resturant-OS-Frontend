@@ -156,13 +156,13 @@ const createRestaurant = async () => {
     isSubmitting.value = true;
 
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
 
         // Prepare the data to send
-        const userid= localStorage.getItem('user_id');
+        const userid = localStorage.getItem('user_id');
         const restaurantData = {
             owner: userid,
             name: form.name.trim(),
@@ -171,12 +171,12 @@ const createRestaurant = async () => {
             tax_rate: form.tax_rate.toString(),
             is_active: form.is_active
         };
-       console.log (restaurantData)
+        console.log(restaurantData);
         const response = await fetch('http://localhost:8000/restaurants/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             },
             body: JSON.stringify(restaurantData)
         });

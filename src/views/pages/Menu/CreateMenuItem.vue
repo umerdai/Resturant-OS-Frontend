@@ -184,14 +184,14 @@ const formData = reactive({
 // Methods
 const fetchCategories = async () => {
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) return;
 
         const response = await fetch('http://localhost:8000/categories/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -277,7 +277,7 @@ const saveMenuItem = async () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             },
             body: JSON.stringify(submitData)
         });

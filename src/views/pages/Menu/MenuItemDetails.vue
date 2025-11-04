@@ -370,7 +370,7 @@ const fetchMenuItem = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -403,7 +403,7 @@ const fetchCategories = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -502,7 +502,7 @@ const saveMenuItem = async () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             },
             body: JSON.stringify(submitData)
         });
@@ -549,7 +549,7 @@ const deleteMenuItem = async () => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 

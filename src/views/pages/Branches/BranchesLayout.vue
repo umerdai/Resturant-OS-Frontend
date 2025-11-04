@@ -15,7 +15,7 @@ const isLoading = ref(false);
 const fetchBranches = async () => {
     isLoading.value = true;
     try {
-        const userId = localStorage.getItem('pos_token');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
@@ -24,7 +24,7 @@ const fetchBranches = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Token ${userId}`
+                Authorization: `Bearer ${userId}`
             }
         });
 
@@ -67,7 +67,7 @@ onMounted(() => {
                 � Branch Management <span class="text-green-500">({{ branches[0]?.restaurant_name }})</span>
             </h2>
             <div class="flex gap-2">
-                <Button label="Create Branch" icon="pi pi-plus" @click="$router.push('/branches/create')"  />
+                <Button label="Create Branch" icon="pi pi-plus" @click="$router.push('/branches/create')" />
                 <Button label="Refresh" icon="pi pi-refresh" @click="fetchBranches" :loading="isLoading" class="p-button-outlined" />
             </div>
         </div>
@@ -118,7 +118,7 @@ onMounted(() => {
 
                 <template #footer>
                     <div class="flex justify-end">
-                        <Button label="View Details" icon="pi pi-eye" size="small" @click="viewBranch(branch)"  />
+                        <Button label="View Details" icon="pi pi-eye" size="small" @click="viewBranch(branch)" />
                     </div>
                 </template>
             </Card>
@@ -131,7 +131,7 @@ onMounted(() => {
                     <i class="pi pi-building text-6xl text-gray-400"></i>
                     <h3 class="text-xl font-semibold text-gray-600">No Branches Found</h3>
                     <p class="text-gray-500">No branches have been created yet.</p>
-                    <Button label="Create First Branch" icon="pi pi-plus"  @click="$router.push('/branches/create')" />
+                    <Button label="Create First Branch" icon="pi pi-plus" @click="$router.push('/branches/create')" />
                 </div>
             </template>
         </Card>
