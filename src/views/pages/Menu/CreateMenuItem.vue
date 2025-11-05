@@ -46,14 +46,15 @@
                             <!-- Sale Price -->
                             <div class="form-group">
                                 <label for="price" class="form-label">Sale Price <span class="text-red-500">*</span></label>
-                                <InputNumber id="price" v-model="formData.price" mode="currency" currency="USD" :min="0" :maxFractionDigits="2" class="w-full" :class="{ 'p-invalid': errors.price }" />
+                                <InputNumber id="price" v-model="formData.price" mode="currency" currency="PKR" :min="0" :maxFractionDigits="2" class="w-full" :class="{ 'p-invalid': errors.price }" />
                                 <small v-if="errors.price" class="p-error">{{ errors.price }}</small>
                             </div>
 
                             <!-- Cost Price -->
                             <div class="form-group">
                                 <label for="cost_price" class="form-label">Cost Price</label>
-                                <InputNumber id="cost_price" v-model="formData.cost_price" mode="currency" currency="USD" :min="0" :maxFractionDigits="2" class="w-full" />
+                                <InputNumber id="cost_price" v-model="formData.cost_price" mode="currency" currency="PKR" :min="0" :maxFractionDigits="2" class="w-full" />
+                                <small v-if="errors.cost_price" class="p-error">{{ errors.cost_price }}</small>
                             </div>
 
                             <!-- Preparation Time -->
@@ -197,7 +198,9 @@ const fetchCategories = async () => {
 
         if (response.ok) {
             const data = await response.json();
-            categories.value = data.results || data;
+            // API may return { data: [...] } or { results: [...] } or direct array
+            categories.value = data.data || data.results || data;
+            console.log('Fetched categories for create menu item:', categories.value);
         }
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -236,6 +239,16 @@ const validateForm = () => {
         isValid = false;
     }
 
+    // If cost price is provided, ensure sale price covers it
+    if (formData.cost_price != null && formData.price != null) {
+        const sale = Number(formData.price);
+        const cost = Number(formData.cost_price);
+        if (!isNaN(cost) && sale < cost) {
+            errors.value.price = 'Sale price must be greater than or equal to cost price';
+            isValid = false;
+        }
+    }
+
     return isValid;
 };
 
@@ -251,45 +264,85 @@ const handleImageError = (event) => {
 
 const saveMenuItem = async () => {
     if (!validateForm()) {
+        // show inline errors plus a concise toast with details
+        const messages = Object.values(errors.value).filter(Boolean).slice(0, 5).join(' | ');
         toast.add({
             severity: 'warn',
             summary: 'Validation Error',
-            detail: 'Please fix the errors in the form',
-            life: 3000
+            detail: messages || 'Please fix the errors in the form',
+            life: 4000
         });
         return;
     }
 
     isSaving.value = true;
     try {
-        const userId = localStorage.getItem('user_id');
-        if (!userId) {
-            throw new Error('User ID not found in localStorage');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in localStorage');
         }
 
-        // Prepare data for API
+        // Prepare data for API in the exact shape backend expects
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        // find category name from loaded categories if available
+        const selectedCategory = categories.value.find((c) => c.id === (formData.category_id || formData.category));
+        const categoryName = selectedCategory ? selectedCategory.name : formData.category_name || null;
+        const restaurantName = (categories.value && categories.value.length > 0 && categories.value[0].restaurant_name) || localStorage.getItem('restaurant_name') || null;
+
+        const salePrice = formData.price != null ? Number(formData.price) : null;
+        const costPrice = formData.cost_price != null ? Number(formData.cost_price) : null;
+
         const submitData = {
-            ...formData,
-            ingredients: formData.ingredients.filter((ing) => ing.name.trim())
+            restaurant: restaurantId || formData.restaurant || null,
+            restaurant_name: (categories.value && categories.value.length > 0 && categories.value[0].restaurant_name) || localStorage.getItem('restaurant_name') || null,
+            category: formData.category_id || formData.category || null,
+            category_name: categoryName,
+            name: formData.name,
+            description: formData.description,
+            cost_price: costPrice != null ? Number(costPrice).toFixed(2) : null,
+            sale_price: salePrice != null ? Number(salePrice).toFixed(2) : null,
+            price_with_tax: salePrice != null ? Number(salePrice) : null,
+            profit_margin: salePrice != null && costPrice != null ? Number((salePrice - costPrice).toFixed(2)) : null,
+            status: formData.is_available ? 'available' : 'unavailable',
+            image_url: formData.image || null,
+            preparation_time: formData.preparation_time || null,
         };
+        console.log('Submitting menu item data (API expected shape):', submitData);
 
         const response = await fetch('http://localhost:8000/menu-items/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(submitData)
         });
 
         if (response.ok) {
+            const data = await response.json();
+
+            // Normalize server response to the client model used across the app
+            const normalized = {
+                id: data.id,
+                name: data.name,
+                description: data.description,
+                sale_price: data.sale_price ? parseFloat(data.sale_price) : data.price ? parseFloat(data.price) : null,
+                cost_price: data.cost_price ? parseFloat(data.cost_price) : null,
+                is_available: data.status ? data.status === 'available' : (data.is_available ?? true),
+                category: data.category || data.category_id || null,
+                image: data.image_url || data.image || null,
+                preparation_time: data.preparation_time || null
+            };
+
             toast.add({
                 severity: 'success',
                 summary: 'Success',
                 detail: 'Menu item created successfully',
                 life: 3000
             });
-            router.push('/menu/items');
+
+            // Navigate to the newly created item's details using its id
+            router.push(`/menu/items/${normalized.id}/details`);
         } else {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Failed to create menu item');

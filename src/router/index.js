@@ -48,6 +48,12 @@ const router = createRouter({
                     meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
                 },
                 {
+                    path: '/categories/:id/details',
+                    name: 'CategoryDetails',
+                    component: () => import('@/views/pages/Categories/CategoryDetails.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
+                },
+                {
                     path: '/restaurant/create',
                     name: 'CreateRestaurant',
                     component: () => import('@/views/pages/Restaurants/CreateRestaurant.vue'),
@@ -148,34 +154,6 @@ const router = createRouter({
                         {
                             path: 'update',
                             name: 'Update',
-                            component: () => import('@/views/pages/Inventory/UpdateInventory.vue')
-                        }
-                    ]
-                },
-
-                {
-                    path: '/menu',
-                    name: 'Menu',
-                    component: () => import('@/views/pages/Menu/MenuLayout.vue'),
-                    children: [
-                        {
-                            path: 'List',
-                            name: 'viewMenuItem',
-                            component: () => import('@/views/pages/Menu/MenuList.vue')
-                        },
-                        {
-                            path: 'add',
-                            name: 'addMenuItem',
-                            component: () => import('@/views/pages/Menu/AddMenuItem.vue')
-                        },
-                        {
-                            path: 'Newitem',
-                            name: 'NewItemInInventory',
-                            component: () => import('@/views/pages/Inventory/AddNewItemInInventory.vue')
-                        },
-                        {
-                            path: 'UpdateItem',
-                            name: 'UpdateItemInInventory',
                             component: () => import('@/views/pages/Inventory/UpdateInventory.vue')
                         }
                     ]

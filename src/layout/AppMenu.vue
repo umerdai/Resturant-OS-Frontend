@@ -13,7 +13,7 @@ const model = ref([
             { label: 'Branches', icon: 'pi pi-fw pi-cog', to: '/branches' },
             { label: 'Statistics', icon: 'pi pi-fw pi-chart-line', to: '/statistics' },
             { label: 'Inventory', icon: 'pi pi-fw pi-cart-minus', to: '/inventory' },
-            { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/menu' },
+            { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/menu/items' },
             { label: 'Sales', icon: 'pi pi-fw pi-credit-card', to: '/sales' },
             { label: 'POS', icon: 'pi pi-fw pi-desktop', to: '/pos' },
             { label: 'Kitchen', icon: 'pi pi-fw pi-cog', to: '/kitchen' },

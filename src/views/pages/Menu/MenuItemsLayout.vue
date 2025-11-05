@@ -68,8 +68,8 @@
                         <!-- Pricing -->
                         <div class="flex justify-between items-center">
                             <div>
-                                <span class="text-lg font-bold text-primary-600">${{ item.price }}</span>
-                                <span v-if="item.cost_price" class="text-sm text-gray-500 ml-2"> Cost: ${{ item.cost_price }} </span>
+                                <span class="text-lg font-bold text-primary-600">₨{{ item.price }}</span>
+                                <span v-if="item.cost_price" class="text-sm text-gray-500 ml-2"> Cost: ₨{{ item.cost_price }} </span>
                             </div>
                             <div v-if="item.preparation_time" class="text-sm text-gray-600">
                                 <i class="pi pi-clock mr-1"></i>
@@ -93,11 +93,11 @@
                             <InputSwitch v-model="item.is_available" @change="toggleAvailability(item)" :disabled="item.isToggling" />
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="flex gap-2 justify-between">
-                            <Button label="View Details" icon="pi pi-eye" class="p-button-info flex-1" @click="viewMenuItem(item)" />
-                            <Button icon="pi pi-pencil" class="p-button-warning" v-tooltip.top="'Edit'" @click="editMenuItem(item)" />
-                            <Button icon="pi pi-trash" class="p-button-danger" v-tooltip.top="'Delete'" @click="confirmDelete(item)" />
+                        <!-- Action Buttons (aligned like Categories/Branches) -->
+                        <div class="flex gap-2 justify-end">
+                            <Button label="View" icon="pi pi-eye" class="p-button-outlined p-button-sm" @click="viewMenuItem(item)" />
+                            <Button icon="pi pi-pencil" class="p-button-warning p-button-sm" @click="editMenuItem(item)" />
+                            <Button icon="pi pi-trash" class="p-button-danger p-button-sm" @click="confirmDelete(item)" />
                         </div>
                     </div>
                 </template>
@@ -194,25 +194,53 @@ const filteredMenuItems = computed(() => {
 });
 
 // Methods
+// Normalize a menu item from server to the client model
+const normalizeMenuItem = (data) => {
+    if (!data) return data;
+    return {
+        id: data.id,
+        name: data.name || data.title,
+        description: data.description || '',
+        price: data.sale_price ? parseFloat(data.sale_price) : data.price ? parseFloat(data.price) : null,
+        cost_price: data.cost_price ? parseFloat(data.cost_price) : data.costPrice ? parseFloat(data.costPrice) : null,
+        is_available: data.status ? data.status === 'available' : (data.is_available ?? true),
+        category_id: data.category || data.category_id || null,
+        category_name: data.category_name || data.categoryName || null,
+        image: data.image_url || data.image || null,
+        preparation_time: data.preparation_time || data.prep_time || null,
+        ingredients_count: data.ingredients_count || (data.ingredients ? data.ingredients.length : 0),
+        
+    };
+};
 const fetchMenuItems = async () => {
     isLoading.value = true;
     try {
-        const userId = localStorage.getItem('token');
-        if (!userId) {
-            throw new Error('User ID not found in localStorage');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in localStorage');
         }
 
         const response = await fetch('http://localhost:8000/menu-items/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             }
         });
 
         if (response.ok) {
             const data = await response.json();
-            menuItems.value = data.results || data;
+            const raw = data.results || data;
+            if (Array.isArray(raw)) {
+                menuItems.value = raw.map(normalizeMenuItem);
+            } else if (raw) {
+                // sometimes API returns an object with data array
+                const list = raw.data || raw.results || raw;
+                if (Array.isArray(list)) menuItems.value = list.map(normalizeMenuItem);
+                else menuItems.value = [normalizeMenuItem(raw)];
+            } else {
+                menuItems.value = [];
+            }
         } else {
             throw new Error('Failed to fetch menu items');
         }
@@ -231,14 +259,14 @@ const fetchMenuItems = async () => {
 
 const fetchCategories = async () => {
     try {
-        const userId = localStorage.getItem('token');
-        if (!userId) return;
+        const token = localStorage.getItem('token');
+        if (!token) return;
 
         const response = await fetch('http://localhost:8000/categories/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             }
         });
 
@@ -269,16 +297,16 @@ const deleteMenuItem = async () => {
 
     isDeleting.value = true;
     try {
-        const userId = localStorage.getItem('user_id');
-        if (!userId) {
-            throw new Error('User ID not found in localStorage');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in localStorage');
         }
 
         const response = await fetch(`http://localhost:8000/menu-items/${selectedMenuItem.value.id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             }
         });
 
@@ -319,16 +347,16 @@ const toggleAvailability = async (item) => {
     item.isToggling = true;
 
     try {
-        const userId = localStorage.getItem('token');
-        if (!userId) {
-            throw new Error('User ID not found in localStorage');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in localStorage');
         }
 
         const response = await fetch('http://localhost:8000/menu-items/toggle_availability/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({ item_id: item.id })
         });

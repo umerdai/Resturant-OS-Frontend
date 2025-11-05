@@ -29,7 +29,7 @@
 
                     <!-- Phone Number -->
                     <div class="form-group">
-                        <label for="phone" class="form-label"> Phone Number </label>
+                        <label for="phone" class="form-label"> Phone Number (+92)</label>
                         <InputText id="phone" v-model="form.phone" placeholder="Enter phone number" class="w-full" :class="{ 'p-invalid': errors.phone }" />
                         <small v-if="errors.phone" class="p-error">{{ errors.phone }}</small>
                     </div>

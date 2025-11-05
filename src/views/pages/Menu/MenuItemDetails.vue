@@ -66,14 +66,14 @@
                                 <div class="stat-item">
                                     <div class="flex justify-between items-center">
                                         <span class="text-gray-600">Sale Price</span>
-                                        <span class="font-bold text-lg text-green-600"> ${{ isEditing ? editForm.price : menuItem.price }} </span>
+                                        <span class="font-bold text-lg text-green-600"> ₨{{ isEditing ? editForm.price : menuItem.price }} </span>
                                     </div>
                                 </div>
 
                                 <div v-if="menuItem.cost_price" class="stat-item">
                                     <div class="flex justify-between items-center">
                                         <span class="text-gray-600">Cost Price</span>
-                                        <span class="font-medium text-orange-600"> ${{ isEditing ? editForm.cost_price : menuItem.cost_price }} </span>
+                                        <span class="font-medium text-orange-600"> ₨{{ isEditing ? editForm.cost_price : menuItem.cost_price }} </span>
                                     </div>
                                 </div>
 
@@ -172,9 +172,9 @@
                                 <!-- Sale Price -->
                                 <div class="detail-item">
                                     <label class="detail-label">Sale Price</label>
-                                    <span v-if="!isEditing" class="detail-value text-lg font-bold text-green-600">${{ menuItem.price }}</span>
+                                    <span v-if="!isEditing" class="detail-value text-lg font-bold text-green-600">₨{{ menuItem.price }}</span>
                                     <div v-else class="detail-edit">
-                                        <InputNumber v-model="editForm.price" mode="currency" currency="USD" :min="0" class="w-full" :class="{ 'p-invalid': errors.price }" />
+                                        <InputNumber v-model="editForm.price" mode="currency" currency="PKR" :min="0" class="w-full" :class="{ 'p-invalid': errors.price }" />
                                         <small v-if="errors.price" class="p-error">{{ errors.price }}</small>
                                     </div>
                                 </div>
@@ -182,9 +182,9 @@
                                 <!-- Cost Price -->
                                 <div class="detail-item">
                                     <label class="detail-label">Cost Price</label>
-                                    <span v-if="!isEditing" class="detail-value">${{ menuItem.cost_price || 'Not set' }}</span>
+                                    <span v-if="!isEditing" class="detail-value">₨{{ menuItem.cost_price || 'Not set' }}</span>
                                     <div v-else class="detail-edit">
-                                        <InputNumber v-model="editForm.cost_price" mode="currency" currency="USD" :min="0" class="w-full" />
+                                        <InputNumber v-model="editForm.cost_price" mode="currency" currency="PKR" :min="0" class="w-full" />
                                     </div>
                                 </div>
 
@@ -361,22 +361,40 @@ const editForm = reactive({
 const fetchMenuItem = async () => {
     isLoading.value = true;
     try {
-        const userId = localStorage.getItem('user_id');
-        if (!userId) {
-            throw new Error('User ID not found in localStorage');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in localStorage');
         }
 
         const response = await fetch(`http://localhost:8000/menu-items/${route.params.id}/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             }
         });
 
         if (response.ok) {
             const data = await response.json();
-            menuItem.value = data;
+            // Normalize server response to client model
+            const normalized = {
+                id: data.id,
+                name: data.name,
+                description: data.description,
+                price: data.sale_price ? parseFloat(data.sale_price) : data.price ? parseFloat(data.price) : null,
+                cost_price: data.cost_price ? parseFloat(data.cost_price) : null,
+                is_available: data.status ? data.status === 'available' : (data.is_available ?? true),
+                category_id: data.category || data.category_id || null,
+                category_name: data.category_name || data.categoryName || null,
+                image: data.image_url || data.image || null,
+                preparation_time: data.preparation_time || null,
+                ingredients: data.ingredients || [],
+                created_at: data.created_at || null,
+                updated_at: data.updated_at || null,
+                raw: data
+            };
+
+            menuItem.value = normalized;
             populateEditForm();
         } else {
             throw new Error('Failed to fetch menu item details');
@@ -396,14 +414,14 @@ const fetchMenuItem = async () => {
 
 const fetchCategories = async () => {
     try {
-        const userId = localStorage.getItem('user_id');
-        if (!userId) return;
+        const token = localStorage.getItem('token');
+        if (!token) return;
 
         const response = await fetch('http://localhost:8000/categories/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             }
         });
 
@@ -488,9 +506,9 @@ const saveMenuItem = async () => {
 
     isSaving.value = true;
     try {
-        const userId = localStorage.getItem('user_id');
-        if (!userId) {
-            throw new Error('User ID not found in localStorage');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in localStorage');
         }
 
         const submitData = {
@@ -502,7 +520,7 @@ const saveMenuItem = async () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(submitData)
         });
@@ -540,16 +558,16 @@ const confirmDelete = () => {
 const deleteMenuItem = async () => {
     isDeleting.value = true;
     try {
-        const userId = localStorage.getItem('user_id');
-        if (!userId) {
-            throw new Error('User ID not found in localStorage');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in localStorage');
         }
 
         const response = await fetch(`http://localhost:8000/menu-items/${route.params.id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             }
         });
 

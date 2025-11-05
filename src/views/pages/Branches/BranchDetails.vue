@@ -357,16 +357,16 @@ const saveBranch = async () => {
 
     isSaving.value = true;
     try {
-        const userId = localStorage.getItem('user_id');
-        if (!userId) {
+        const token= localStorage.getItem('token');
+        if (!token) {
             throw new Error('User ID not found in localStorage');
         }
 
         const response = await fetch(`http://localhost:8000/branches/${route.params.id}/`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(editForm)
         });
@@ -406,7 +406,7 @@ const confirmDelete = () => {
 const deleteBranch = async () => {
     isDeleting.value = true;
     try {
-        const userId = localStorage.getItem('user_id');
+        const userId = localStorage.getItem('token');
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }

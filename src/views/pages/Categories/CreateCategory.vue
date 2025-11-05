@@ -123,9 +123,9 @@ const createCategory = async () => {
     isSubmitting.value = true;
 
     try {
-        const userId = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         const restaurantId = localStorage.getItem('restaurant_id');
-        if (!userId) {
+        if (!token) {
             throw new Error('User ID not found in localStorage');
         }
 
@@ -140,7 +140,7 @@ const createCategory = async () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userId}`
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(categoryData)
         });
