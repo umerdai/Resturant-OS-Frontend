@@ -417,7 +417,13 @@ const fetchCategories = async () => {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        const response = await fetch('http://localhost:8000/categories/', {
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        let url = 'http://localhost:8000/categories/';
+        if (restaurantId) {
+            url += `?restaurant_id=${restaurantId}`;
+        }
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -427,7 +433,10 @@ const fetchCategories = async () => {
 
         if (response.ok) {
             const data = await response.json();
-            categories.value = data.results || data;
+            categories.value = data.data || data.results || data;
+            console.log('Fetched categories for menu item details:', categories.value);
+        } else {
+            console.error('Failed to fetch categories:', response.status, response.statusText);
         }
     } catch (error) {
         console.error('Error fetching categories:', error);

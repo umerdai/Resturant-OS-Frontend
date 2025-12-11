@@ -96,7 +96,6 @@
                         <!-- Action Buttons (aligned like Categories/Branches) -->
                         <div class="flex gap-2 justify-end">
                             <Button label="View" icon="pi pi-eye" class="p-button-outlined p-button-sm" @click="viewMenuItem(item)" />
-                            <Button icon="pi pi-pencil" class="p-button-warning p-button-sm" @click="editMenuItem(item)" />
                             <Button icon="pi pi-trash" class="p-button-danger p-button-sm" @click="confirmDelete(item)" />
                         </div>
                     </div>
@@ -262,7 +261,13 @@ const fetchCategories = async () => {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        const response = await fetch('http://localhost:8000/categories/', {
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        let url = 'http://localhost:8000/categories/';
+        if (restaurantId) {
+            url += `?restaurant_id=${restaurantId}`;
+        }
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

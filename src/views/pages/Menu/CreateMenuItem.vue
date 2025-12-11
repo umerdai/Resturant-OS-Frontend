@@ -188,7 +188,13 @@ const fetchCategories = async () => {
         const userId = localStorage.getItem('token');
         if (!userId) return;
 
-        const response = await fetch('http://localhost:8000/categories/', {
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        let url = 'http://localhost:8000/categories/';
+        if (restaurantId) {
+            url += `?restaurant_id=${restaurantId}`;
+        }
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -305,7 +311,7 @@ const saveMenuItem = async () => {
             profit_margin: salePrice != null && costPrice != null ? Number((salePrice - costPrice).toFixed(2)) : null,
             status: formData.is_available ? 'available' : 'unavailable',
             image_url: formData.image || null,
-            preparation_time: formData.preparation_time || null,
+            preparation_time: formData.preparation_time || null
         };
         console.log('Submitting menu item data (API expected shape):', submitData);
 

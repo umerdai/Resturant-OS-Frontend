@@ -1,27 +1,25 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
 import { useMenuStore } from '@/stores/menu.js';
 import { usePosStore } from '@/stores/pos.js';
 import { useToast } from 'primevue/usetoast';
+import { computed, onMounted, ref } from 'vue';
 
 // PrimeVue Components
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import Card from 'primevue/card';
 import Badge from 'primevue/badge';
-import Toolbar from 'primevue/toolbar';
+import Button from 'primevue/button';
+import Card from 'primevue/card';
 import Dialog from 'primevue/dialog';
+import Divider from 'primevue/divider';
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
-import Textarea from 'primevue/textarea';
-import Divider from 'primevue/divider';
-import DataView from 'primevue/dataview';
-import Tag from 'primevue/tag';
+import InputText from 'primevue/inputtext';
 import ScrollPanel from 'primevue/scrollpanel';
+import Tag from 'primevue/tag';
+import Toolbar from 'primevue/toolbar';
 
 // Components
-import PosCart from '@/components/pos/PosCart.vue';
 import PaymentDialog from '@/components/pos/PaymentDialog.vue';
+import PosCart from '@/components/pos/PosCart.vue';
 
 const menuStore = useMenuStore();
 const posStore = usePosStore();
@@ -165,7 +163,7 @@ const getItemImage = (item) => {
 <template>
     <div class="pos-layout min-h-screen bg-gray-50">
         <!-- Header -->
-        <Toolbar class=" shadow-sm">
+        <Toolbar class="shadow-sm">
             <template #start>
                 <h1 class="text-2xl font-bold text-gray-800">Point of Sale</h1>
             </template>
@@ -188,7 +186,7 @@ const getItemImage = (item) => {
 
         <div class="flex gap-6 min-h-screen POS-Parent-component">
             <!-- Menu Items Section -->
-            <div class="flex-1  p-4 POS-Menu-component">
+            <div class="flex-1 p-4 POS-Menu-component">
                 <Card class="h-full">
                     <template #title>
                         <div class="flex justify-between items-center">
@@ -258,12 +256,12 @@ const getItemImage = (item) => {
                                 <span>-{{ formatCurrency(posStore.discountAmount) }}</span>
                             </div>
                             <div class="flex justify-between text-sm text-gray-600">
-                                <span style="color: var(--text-color);">Tax ({{ (posStore.taxRate * 100).toFixed(0) }}%):</span>
-                                <span style="color: var(--text-color);">{{ formatCurrency(posStore.cartTax) }}</span>
+                                <span style="color: var(--text-color)">Tax ({{ (posStore.taxRate * 100).toFixed(0) }}%):</span>
+                                <span style="color: var(--text-color)">{{ formatCurrency(posStore.cartTax) }}</span>
                             </div>
                             <div class="flex justify-between text-sm text-gray-600">
-                                <span style="color: var(--text-color);">Service Charge ({{ (posStore.serviceChargeRate * 100).toFixed(0) }}%):</span>
-                                <span style="color: var(--text-color);">{{ formatCurrency(posStore.cartServiceCharge) }}</span>
+                                <span style="color: var(--text-color)">Service Charge ({{ (posStore.serviceChargeRate * 100).toFixed(0) }}%):</span>
+                                <span style="color: var(--text-color)">{{ formatCurrency(posStore.cartServiceCharge) }}</span>
                             </div>
                             <Divider />
                             <div class="flex justify-between text-xl font-bold">
@@ -335,21 +333,17 @@ const getItemImage = (item) => {
 }
 
 .POS-Menu-component {
-    border: 2px solid var(--p-button-primary-border-color);
     border-radius: 10px;
-  background-color: var(--surface-card);
-  color: var(--text-color);
-
+    background-color: var(--surface-card);
+    color: var(--text-color);
 }
-.POS-Order-Summary-component{
-       border: 2px solid var(--p-button-primary-border-color);
+.POS-Order-Summary-component {
     border-radius: 10px;
 }
 .POS-Parent-component {
-
-  background-color: var(--surface-card);
-  color: var(--text-color);
-  padding: 0.75rem;
-  border-radius: 0.5rem;
+    background-color: var(--surface-card);
+    color: var(--text-color);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
 }
 </style>
