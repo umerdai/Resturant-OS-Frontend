@@ -96,6 +96,7 @@
                         <!-- Action Buttons (aligned like Categories/Branches) -->
                         <div class="flex gap-2 justify-end">
                             <Button label="View" icon="pi pi-eye" class="p-button-outlined p-button-sm" @click="viewMenuItem(item)" />
+                            <Button icon="pi pi-book" class="p-button-info p-button-sm" @click="manageRecipe(item)" v-tooltip.top="'Manage Recipe'" />
                             <Button icon="pi pi-trash" class="p-button-danger p-button-sm" @click="confirmDelete(item)" />
                         </div>
                     </div>
@@ -207,8 +208,7 @@ const normalizeMenuItem = (data) => {
         category_name: data.category_name || data.categoryName || null,
         image: data.image_url || data.image || null,
         preparation_time: data.preparation_time || data.prep_time || null,
-        ingredients_count: data.ingredients_count || (data.ingredients ? data.ingredients.length : 0),
-        
+        ingredients_count: data.ingredients_count || (data.ingredients ? data.ingredients.length : 0)
     };
 };
 const fetchMenuItems = async () => {
@@ -229,6 +229,7 @@ const fetchMenuItems = async () => {
 
         if (response.ok) {
             const data = await response.json();
+            console.log('Menu items fetched successfully.', data);
             const raw = data.results || data;
             if (Array.isArray(raw)) {
                 menuItems.value = raw.map(normalizeMenuItem);
@@ -286,6 +287,10 @@ const fetchCategories = async () => {
 
 const viewMenuItem = (item) => {
     router.push(`/menu/items/${item.id}/details`);
+};
+
+const manageRecipe = (item) => {
+    router.push(`/menu/items/${item.id}/recipe`);
 };
 
 const editMenuItem = (item) => {

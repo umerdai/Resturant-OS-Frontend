@@ -107,6 +107,56 @@
                         </div>
                     </div>
 
+                    <!-- Recipe Section -->
+                    <div class="form-section">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="section-title mb-0">Recipe Details (Optional)</h3>
+                            <Checkbox v-model="includeRecipe" :binary="true" inputId="includeRecipe" />
+                            <label for="includeRecipe" class="ml-2 cursor-pointer">Add Recipe</label>
+                        </div>
+
+                        <div v-if="includeRecipe" class="space-y-4">
+                            <!-- Recipe Name -->
+                            <div class="form-group">
+                                <label for="recipe_name" class="form-label">Recipe Name <span class="text-red-500">*</span></label>
+                                <InputText id="recipe_name" v-model="recipeData.name" class="w-full" placeholder="Enter recipe name" />
+                            </div>
+
+                            <!-- Preparation Time -->
+                            <div class="form-group">
+                                <label class="form-label">Preparation Time (min) <span class="text-red-500">*</span></label>
+                                <InputNumber v-model="recipeData.preparation_time" :min="0" class="w-full" />
+                            </div>
+
+                            <!-- Recipe Ingredients -->
+                            <div class="form-group">
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="form-label mb-0">Recipe Ingredients</label>
+                                    <Button type="button" icon="pi pi-plus" class="p-button-text p-button-sm" @click="addRecipeIngredient" label="Add Ingredient" />
+                                </div>
+                                <div v-if="recipeData.ingredients.length > 0" class="space-y-2">
+                                    <div v-for="(ing, index) in recipeData.ingredients" :key="index" class="grid grid-cols-1 md:grid-cols-12 gap-2 items-end p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                                        <div class="md:col-span-6">
+                                            <label class="form-label text-xs">Inventory Item ID</label>
+                                            <InputText v-model="ing.inventory_item" placeholder="Enter inventory item ID" class="w-full" />
+                                        </div>
+                                        <div class="md:col-span-3">
+                                            <label class="form-label text-xs">Quantity</label>
+                                            <InputNumber v-model="ing.quantity" :min="0" :minFractionDigits="0" :maxFractionDigits="3" class="w-full" />
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="form-label text-xs">Unit</label>
+                                            <Dropdown v-model="ing.unit" :options="units" placeholder="Unit" class="w-full" />
+                                        </div>
+                                        <div class="md:col-span-1">
+                                            <Button type="button" icon="pi pi-trash" class="p-button-danger p-button-text" @click="removeRecipeIngredient(index)" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Status & Image Section -->
                     <div class="form-section">
                         <h3 class="section-title">Status & Media</h3>
@@ -182,6 +232,14 @@ const formData = reactive({
     ingredients: []
 });
 
+// Recipe data
+const includeRecipe = ref(false);
+const recipeData = reactive({
+    name: '',
+    preparation_time: 10,
+    ingredients: []
+});
+
 // Methods
 const fetchCategories = async () => {
     try {
@@ -223,6 +281,14 @@ const addIngredient = () => {
 
 const removeIngredient = (index) => {
     formData.ingredients.splice(index, 1);
+};
+
+const addRecipeIngredient = () => {
+    recipeData.ingredients.push({ inventory_item: '', quantity: 0, unit: 'kg' });
+};
+
+const removeRecipeIngredient = (index) => {
+    recipeData.ingredients.splice(index, 1);
 };
 
 const validateForm = () => {
@@ -340,10 +406,15 @@ const saveMenuItem = async () => {
                 preparation_time: data.preparation_time || null
             };
 
+            // If recipe is included, create it
+            if (includeRecipe.value && normalized.id) {
+                await createRecipe(normalized.id);
+            }
+
             toast.add({
                 severity: 'success',
                 summary: 'Success',
-                detail: 'Menu item created successfully',
+                detail: 'Menu item' + (includeRecipe.value ? ' and recipe' : '') + ' created successfully',
                 life: 3000
             });
 
@@ -363,6 +434,33 @@ const saveMenuItem = async () => {
         });
     } finally {
         isSaving.value = false;
+    }
+};
+
+const createRecipe = async (menuItemId) => {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const payload = {
+            menu_item: menuItemId,
+            ...recipeData
+        };
+
+        const response = await fetch('http://localhost:8000/recipes/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            console.error('Failed to create recipe:', await response.json());
+        }
+    } catch (error) {
+        console.error('Error creating recipe:', error);
     }
 };
 

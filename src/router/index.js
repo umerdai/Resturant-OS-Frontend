@@ -177,6 +177,12 @@ const router = createRouter({
                     meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
                 },
                 {
+                    path: '/menu/items/:id/recipe',
+                    name: 'RecipeManagement',
+                    component: () => import('@/views/pages/Menu/RecipeManagement.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin', 'manager'] }
+                },
+                {
                     path: '/sales',
                     name: 'Sales',
                     component: () => import('@/views/pages/Sales/SalesLayout.vue')

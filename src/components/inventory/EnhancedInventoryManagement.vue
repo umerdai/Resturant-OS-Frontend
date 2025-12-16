@@ -1,8 +1,8 @@
 <script>
-import { ref, computed, onMounted } from 'vue';
 import { useEnhancedInventoryStore } from '@/stores/enhancedInventory';
-import { useToast } from 'primevue/usetoast';
 import { FilterMatchMode } from '@primevue/core/api';
+import { useToast } from 'primevue/usetoast';
+import { computed, onMounted, ref } from 'vue';
 
 export default {
     name: 'EnhancedInventoryManagement',
