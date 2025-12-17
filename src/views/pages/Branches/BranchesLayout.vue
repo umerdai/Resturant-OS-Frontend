@@ -20,7 +20,13 @@ const fetchBranches = async () => {
             throw new Error('User ID not found in localStorage');
         }
 
-        const response = await fetch(`http://localhost:8000/branches/`, {
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        let url = `http://localhost:8000/branches/`;
+        if (restaurantId) {
+            url += `?restaurant_id=${restaurantId}`;
+        }
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

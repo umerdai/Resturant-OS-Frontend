@@ -22,6 +22,26 @@ const props = defineProps({
     transaction: {
         type: Object,
         default: null
+    },
+    cart: {
+        type: Array,
+        default: () => []
+    },
+    total: {
+        type: Number,
+        default: 0
+    },
+    customer: {
+        type: Object,
+        default: () => ({ name: '', phone: '', email: '' })
+    },
+    branchId: {
+        type: [Number, String],
+        default: null
+    },
+    discount: {
+        type: Number,
+        default: 0
     }
 });
 
@@ -48,7 +68,7 @@ const paymentMethods = computed(() => [
     { label: 'Mobile Payment', value: 'mobile_payment', icon: 'pi pi-mobile' }
 ]);
 
-const totalAmount = computed(() => props.transaction?.total || 0);
+const totalAmount = computed(() => props.total || props.transaction?.total || 0);
 
 const change = computed(() => {
     if (selectedPaymentMethod.value === 'cash') {
@@ -87,53 +107,77 @@ const processPayment = async () => {
     isProcessing.value = true;
 
     try {
-        let paymentData = {
-            method: selectedPaymentMethod.value,
-            amount: totalAmount.value
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Authentication token not found');
+        }
+
+        // Get branch ID from props or localStorage
+        const branchId = props.branchId || localStorage.getItem('branch_id');
+        if (!branchId) {
+            throw new Error('Branch ID not found');
+        }
+
+        // Prepare sales data for API
+        const salesData = {
+            branch_id: branchId,
+            customer_name: props.customer?.name || 'Walk-in Customer',
+            customer_contact: props.customer?.phone || '',
+            payment_method: selectedPaymentMethod.value,
+            discount_amount: props.discount || 0,
+            items: props.cart.map(item => ({
+                menu_item_id: item.id,
+                quantity: item.quantity
+            }))
         };
 
-        switch (selectedPaymentMethod.value) {
-            case 'cash':
-                paymentData = {
-                    ...paymentData,
-                    amount: cashAmount.value,
-                    change: change.value
-                };
-                break;
-            case 'card':
-                paymentData = {
-                    ...paymentData,
-                    cardLastFour: cardNumber.value.slice(-4),
-                    cardHolderName: cardHolderName.value,
-                    approvalCode: generateApprovalCode()
-                };
-                break;
-            case 'mobile_payment':
-                paymentData = {
-                    ...paymentData,
-                    approvalCode: generateApprovalCode()
-                };
-                break;
+        // Call the sales API
+        const response = await fetch('http://localhost:8000/pos/create_sale/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(salesData)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Failed to create sale');
         }
 
-        // Simulate processing delay
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const result = await response.json();
 
-        const result = await posStore.processPayment(paymentData);
+        // Store transaction details
+        lastTransaction.value = {
+            transactionNumber: result.id || result.sale_id || generateApprovalCode(),
+            total: totalAmount.value,
+            paymentMethod: selectedPaymentMethod.value,
+            date: new Date().toISOString(),
+            items: props.cart,
+            customer: props.customer,
+            ...result
+        };
 
-        if (result.success) {
-            lastTransaction.value = result.transaction;
-            showReceipt.value = true;
-            resetForm();
+        showReceipt.value = true;
+        resetForm();
 
-            setTimeout(() => {
-                emit('payment-complete', result);
-                closeDialog();
-            }, 3000);
-        } else {
-            emit('payment-complete', result);
-        }
+        setTimeout(() => {
+            emit('payment-complete', {
+                success: true,
+                transaction: lastTransaction.value
+            });
+            closeDialog();
+        }, 3000);
+
     } catch (error) {
+        console.error('Payment processing error:', error);
+        toast.add({
+            severity: 'error',
+            summary: 'Payment Failed',
+            detail: error.message || 'Failed to process payment',
+            life: 5000
+        });
         emit('payment-complete', {
             success: false,
             message: error.message

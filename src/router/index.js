@@ -25,6 +25,12 @@ const router = createRouter({
                     component: () => import('@/views/pages/Categories/CategoryLayout.vue')
                 },
                 {
+                    path: '/user-management',
+                    name: 'UserManagement',
+                    component: () => import('@/views/pages/Users/UserManagement.vue'),
+                    meta: { requiresAuth: true, roles: ['owner', 'admin'] }
+                },
+                {
                     path: '/branches',
                     name: 'Branches',
                     component: () => import('@/views/pages/Branches/BranchesLayout.vue')

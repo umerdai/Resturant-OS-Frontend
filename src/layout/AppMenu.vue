@@ -19,6 +19,7 @@ const model = ref([
             { label: 'Kitchen', icon: 'pi pi-fw pi-cog', to: '/kitchen' },
             { label: 'Category', icon: 'pi pi-fw pi-cog', to: '/category' },
             { label: 'Staff', icon: 'pi pi-fw pi-users', to: '/staff' },
+            { label: 'User Management', icon: 'pi pi-fw pi-users', to: '/user-management' },
             { label: 'Payments', icon: 'pi pi-fw pi-credit-card', to: '/payments' },
             { label: 'Reports & Analytics', icon: 'pi pi-fw pi-chart-pie', to: '/reports-analytics' },
             { label: 'Enhanced Inventory', icon: 'pi pi-fw pi-warehouse', to: '/enhanced-inventory' }

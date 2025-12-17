@@ -23,6 +23,7 @@ const toast = useToast();
 // Reactive data
 const menuItems = ref([]);
 const categories = ref([]);
+const branches = ref([]);
 const searchQuery = ref('');
 const selectedCategory = ref(null);
 const showPaymentDialog = ref(false);
@@ -35,6 +36,8 @@ const customerForm = ref({
     email: '',
     tableId: null
 });
+const selectedBranch = ref(null);
+const discountAmount = ref(0);
 
 // Computed properties
 const filteredItems = computed(() => {
@@ -145,6 +148,42 @@ const fetchCategories = async () => {
     }
 };
 
+const fetchBranches = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        let url = 'http://localhost:8000/branches/';
+        if (restaurantId) {
+            url += `?restaurant_id=${restaurantId}`;
+        }
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            branches.value = data.results || data;
+            
+            // Auto-select branch from localStorage or first branch
+            const savedBranchId = localStorage.getItem('branch_id');
+            if (savedBranchId) {
+                selectedBranch.value = parseInt(savedBranchId);
+            } else if (branches.value.length > 0) {
+                selectedBranch.value = branches.value[0].id;
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching branches:', error);
+    }
+};
+
 const addItemToCart = (item) => {
     const existingItem = cart.value.find((cartItem) => cartItem.id === item.id);
 
@@ -182,7 +221,16 @@ const proceedToPayment = () => {
 const handlePaymentComplete = (paymentResult) => {
     showPaymentDialog.value = false;
     if (paymentResult && paymentResult.success) {
+        // Reset form after successful payment
         cart.value = [];
+        customerForm.value = {
+            name: '',
+            phone: '',
+            email: '',
+            tableId: null
+        };
+        discountAmount.value = 0;
+        
         toast.add({
             severity: 'success',
             summary: 'Payment Complete',
@@ -239,6 +287,7 @@ const updateCartItemQuantity = (itemId, quantity) => {
 
 // Lifecycle
 onMounted(async () => {
+    await fetchBranches();
     await fetchCategories();
     await fetchMenuItems();
 });
@@ -269,6 +318,7 @@ const getItemImage = (item) => {
                         <i class="pi pi-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     </div>
                     <Dropdown v-model="selectedCategory" :options="categories" optionLabel="name" optionValue="id" placeholder="All Categories" class="w-48" show-clear />
+                    <Dropdown v-model="selectedBranch" :options="branches" optionLabel="branch_name" optionValue="id" placeholder="Select Branch" class="w-48" />
                 </div>
             </template>
             <template #end>
@@ -369,10 +419,17 @@ const getItemImage = (item) => {
                                 <span style="color: var(--text-color)">Tax (5%):</span>
                                 <span style="color: var(--text-color)">{{ formatCurrency(cartTax) }}</span>
                             </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Discount:</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm">₨</span>
+                                    <InputNumber v-model="discountAmount" :min="0" :max="cartSubtotal" class="w-24" size="small" />
+                                </div>
+                            </div>
                             <Divider />
                             <div class="flex justify-between text-xl font-bold">
                                 <span>Total:</span>
-                                <span>{{ formatCurrency(cartTotal) }}</span>
+                                <span>{{ formatCurrency(cartTotal - discountAmount) }}</span>
                             </div>
                         </div>
 
@@ -413,7 +470,17 @@ const getItemImage = (item) => {
         </Dialog>
 
         <!-- Payment Dialog -->
-        <PaymentDialog v-if="showPaymentDialog" :visible="showPaymentDialog" @update:visible="showPaymentDialog = $event" :cart="cart" :total="cartTotal" @payment-complete="handlePaymentComplete" />
+        <PaymentDialog 
+            v-if="showPaymentDialog" 
+            :visible="showPaymentDialog" 
+            @update:visible="showPaymentDialog = $event" 
+            :cart="cart" 
+            :total="cartTotal" 
+            :customer="customerForm"
+            :branch-id="selectedBranch"
+            :discount="discountAmount"
+            @payment-complete="handlePaymentComplete" 
+        />
     </div>
 </template>
 

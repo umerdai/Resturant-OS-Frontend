@@ -1,9 +1,9 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useOrderStore } from '@/stores/order';
 import { useTableStore } from '@/stores/table';
 import { useToast } from 'primevue/usetoast';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 const authStore = useAuthStore();
 const orderStore = useOrderStore();
@@ -13,7 +13,8 @@ const toast = useToast();
 // Component state
 const isRealTimeEnabled = ref(true);
 const loadingOrders = ref(false);
-const branches = ref(["dha", "lahore"]);
+const branches = ref([]);
+const loadingBranches = ref(false);
 // Real-time update interval
 let updateInterval = null;
 
@@ -161,17 +162,55 @@ const refreshDashboard = async () => {
     }
 };
 
+const fetchBranches = async () => {
+    loadingBranches.value = true;
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Authentication token not found');
+        }
+
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        let url = 'http://localhost:8000/branches/';
+        if (restaurantId) {
+            url += `?restaurant_id=${restaurantId}`;
+        }
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            branches.value = data.results || data;
+        } else {
+            throw new Error('Failed to fetch branches');
+        }
+    } catch (error) {
+        console.error('Error fetching branches:', error);
+        toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.message || 'Failed to fetch branches',
+            life: 3000
+        });
+    } finally {
+        loadingBranches.value = false;
+    }
+};
+
 // Lifecycle
 onMounted(async () => {
     await refreshDashboard();
-    await fetchBranchNames();
+    await fetchBranches();
     if (isRealTimeEnabled.value) {
         startRealTimeUpdates();
     }
 });
-const fetchBranchNames= async ()=>{
-    console.log("hello");
-}
 onUnmounted(() => {
     stopRealTimeUpdates();
 });
@@ -182,23 +221,15 @@ onUnmounted(() => {
         <div class="dashboard-header">
             <div>
                 <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0">Good {{ getTimeGreeting() }}, {{ authStore.user?.name || 'User' }}!</h1>
-               <div class="flex flex-wrap gap-2 justify-center items-center">
-    <!-- Static button -->
-    <button
-      class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"
-    >
-      All Branches
-    </button>
+                <div class="flex flex-wrap gap-2 justify-center items-center">
+                    <!-- Static button -->
+                    <button class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">All Branches</button>
 
-    <!-- Dynamic buttons from API -->
-   <button
-  v-for="(branch, index) in branches"
-  :key="index"
-  class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition "
->
-  {{ branch }}
-</button>
-  </div>
+                    <!-- Dynamic buttons from API -->
+                    <button v-for="(branch, index) in branches" :key="index" class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                        {{ branch.branch_name }}
+                    </button>
+                </div>
             </div>
             <div class="flex gap-3">
                 <Button :label="isRealTimeEnabled ? 'Pause Updates' : 'Enable Real-time'" :icon="isRealTimeEnabled ? 'pi pi-pause' : 'pi pi-play'" :severity="isRealTimeEnabled ? 'warning' : 'success'" outlined @click="toggleRealTime" />

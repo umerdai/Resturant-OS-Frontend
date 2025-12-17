@@ -50,7 +50,13 @@ const fetchBranches = async () => {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        const response = await fetch('http://localhost:8000/branches/', {
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        let url = 'http://localhost:8000/branches/';
+        if (restaurantId) {
+            url += `?restaurant_id=${restaurantId}`;
+        }
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -173,7 +179,7 @@ onMounted(() => {
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2">Filter by Branch</label>
-                        <Dropdown v-model="selectedBranch" :options="branches" optionLabel="name" optionValue="id" placeholder="All Branches" class="w-full" showClear />
+                        <Dropdown v-model="selectedBranch" :options="branches" optionLabel="branch_name" optionValue="id" placeholder="All Branches" class="w-full" showClear />
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2">Filter by Item</label>
