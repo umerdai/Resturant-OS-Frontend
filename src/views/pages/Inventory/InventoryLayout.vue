@@ -35,7 +35,6 @@ const formData = ref({
     unit: 'kg',
     reorder_level: 0,
     cost_per_unit: 0,
-    supplier_name: '',
     branch: null
 });
 
@@ -66,17 +65,16 @@ const fetchInventory = async () => {
         }
 
         const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
-        let url = 'http://localhost:8000/inventory/';
-        if (restaurantId) {
-            url += `?restaurant_id=${restaurantId}`;
-        }
 
-        const response = await fetch(url, {
+        const response = await fetch('http://localhost:8000/inventory/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
-            }
+            },
+            body: JSON.stringify({
+                restaurant: restaurantId
+            })
         });
 
         if (response.ok) {
@@ -166,7 +164,6 @@ const openAddDialog = () => {
         unit: 'kg',
         reorder_level: 0,
         cost_per_unit: 0,
-        supplier_name: '',
         branch: null
     };
     showAddDialog.value = true;
@@ -188,13 +185,19 @@ const addInventoryItem = async () => {
             throw new Error('Authentication token not found');
         }
 
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        const requestData = {
+            ...formData.value,
+            restaurant: restaurantId
+        };
+
         const response = await fetch('http://localhost:8000/inventory/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify(formData.value)
+            body: JSON.stringify(requestData)
         });
 
         if (response.ok) {
@@ -232,13 +235,19 @@ const updateInventoryItem = async () => {
             throw new Error('Authentication token not found');
         }
 
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        const requestData = {
+            ...formData.value,
+            restaurant: restaurantId
+        };
+
         const response = await fetch(`http://localhost:8000/inventory/${selectedItem.value.id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify(formData.value)
+            body: JSON.stringify(requestData)
         });
 
         if (response.ok) {
@@ -281,12 +290,17 @@ const deleteInventoryItem = async () => {
             throw new Error('Authentication token not found');
         }
 
+        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+
         const response = await fetch(`http://localhost:8000/inventory/${selectedItem.value.id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
-            }
+            },
+            body: JSON.stringify({
+                restaurant: restaurantId
+            })
         });
 
         if (response.ok) {
@@ -395,7 +409,6 @@ onMounted(() => {
                             <span class="font-medium">₨{{ data.cost_per_unit }}</span>
                         </template>
                     </Column>
-                    <Column field="supplier_name" header="Supplier" :sortable="true" style="min-width: 150px" />
                     <Column header="Status" style="min-width: 120px">
                         <template #body="{ data }">
                             <Badge :value="getStockStatus(data).replace('_', ' ').toUpperCase()" :severity="getStockSeverity(data)" />
@@ -458,11 +471,6 @@ onMounted(() => {
                 </div>
 
                 <div>
-                    <label for="supplier_name" class="block text-sm font-medium mb-2">Supplier Name</label>
-                    <InputText id="supplier_name" v-model="formData.supplier_name" placeholder="Enter supplier name" class="w-full" />
-                </div>
-
-                <div>
                     <label for="branch" class="block text-sm font-medium mb-2">Branch</label>
                     <Dropdown id="branch" v-model="formData.branch" :options="branches" optionLabel="branch_name" optionValue="id" placeholder="Select branch" class="w-full" />
                 </div>
@@ -502,11 +510,6 @@ onMounted(() => {
                         <label for="edit_cost_per_unit" class="block text-sm font-medium mb-2">Cost per Unit</label>
                         <InputNumber id="edit_cost_per_unit" v-model="formData.cost_per_unit" placeholder="0" class="w-full" :min="0" mode="currency" currency="PKR" />
                     </div>
-                </div>
-
-                <div>
-                    <label for="edit_supplier_name" class="block text-sm font-medium mb-2">Supplier Name</label>
-                    <InputText id="edit_supplier_name" v-model="formData.supplier_name" placeholder="Enter supplier name" class="w-full" />
                 </div>
 
                 <div>

@@ -1,17 +1,17 @@
 <script setup>
-import { ref, computed, defineEmits, defineProps } from 'vue';
 import { usePosStore } from '@/stores/pos.js';
 import { useToast } from 'primevue/usetoast';
+import { computed, defineEmits, defineProps, ref } from 'vue';
 
 // PrimeVue Components
 import Button from 'primevue/button';
-import InputNumber from 'primevue/inputnumber';
-import Dialog from 'primevue/dialog';
-import RadioButton from 'primevue/radiobutton';
-import InputText from 'primevue/inputtext';
-import Divider from 'primevue/divider';
 import Card from 'primevue/card';
+import Dialog from 'primevue/dialog';
+import Divider from 'primevue/divider';
+import InputNumber from 'primevue/inputnumber';
+import InputText from 'primevue/inputtext';
 import ProgressSpinner from 'primevue/progressspinner';
+import RadioButton from 'primevue/radiobutton';
 
 // Props and Emits
 const props = defineProps({
@@ -42,6 +42,10 @@ const props = defineProps({
     discount: {
         type: Number,
         default: 0
+    },
+    paymentMethod: {
+        type: String,
+        default: 'cash'
     }
 });
 
@@ -51,7 +55,7 @@ const posStore = usePosStore();
 const toast = useToast();
 
 // Reactive data
-const selectedPaymentMethod = ref('cash');
+const selectedPaymentMethod = ref(props.paymentMethod || 'cash');
 const cashAmount = ref(0);
 const cardNumber = ref('');
 const cardHolderName = ref('');
@@ -78,8 +82,6 @@ const change = computed(() => {
 });
 
 const canProcessPayment = computed(() => {
-    if (!props.transaction) return false;
-
     switch (selectedPaymentMethod.value) {
         case 'cash':
             return cashAmount.value >= totalAmount.value;
@@ -125,11 +127,20 @@ const processPayment = async () => {
             customer_contact: props.customer?.phone || '',
             payment_method: selectedPaymentMethod.value,
             discount_amount: props.discount || 0,
-            items: props.cart.map(item => ({
+            items: props.cart.map((item) => ({
                 menu_item_id: item.id,
                 quantity: item.quantity
             }))
         };
+
+        console.log('=== Sales API Request Data ===');
+        console.log('Branch ID:', branchId);
+        console.log('Customer:', props.customer);
+        console.log('Payment Method:', selectedPaymentMethod.value);
+        console.log('Discount:', props.discount);
+        console.log('Cart:', props.cart);
+        console.log('Full Request Body:', JSON.stringify(salesData, null, 2));
+        console.log('==============================');
 
         // Call the sales API
         const response = await fetch('http://localhost:8000/pos/create_sale/', {
@@ -143,10 +154,17 @@ const processPayment = async () => {
 
         if (!response.ok) {
             const errorData = await response.json();
+            console.error('=== API Error Response ===');
+            console.error('Status:', response.status);
+            console.error('Error Data:', errorData);
+            console.error('=========================');
             throw new Error(errorData.detail || 'Failed to create sale');
         }
 
         const result = await response.json();
+        console.log('=== API Success Response ===');
+        console.log('Result:', result);
+        console.log('===========================');
 
         // Store transaction details
         lastTransaction.value = {
@@ -169,7 +187,6 @@ const processPayment = async () => {
             });
             closeDialog();
         }, 3000);
-
     } catch (error) {
         console.error('Payment processing error:', error);
         toast.add({
@@ -226,10 +243,15 @@ const selectQuickAmount = (amount) => {
     cashAmount.value = amount;
 };
 
+const updateCashAmount = (event) => {
+    // Force reactivity update
+    cashAmount.value = event.value;
+};
+
 const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-PK', {
         style: 'currency',
-        currency: 'USD'
+        currency: 'PKR'
     }).format(amount);
 };
 
@@ -312,10 +334,10 @@ const printReceipt = () => {
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Amount Received</label>
-                        <InputNumber v-model="cashAmount" mode="currency" currency="USD" locale="en-US" :min="totalAmount" class="w-full" size="large" />
+                        <InputNumber v-model="cashAmount" mode="currency" currency="PKR" locale="en-PK" :min="totalAmount" class="w-full" size="large" @input="updateCashAmount" />
                     </div>
 
-                    <div v-if="cashAmount > 0" class="bg-gray-50 p-4 rounded-lg">
+                    <div v-if="cashAmount >= totalAmount" class="bg-gray-50 p-4 rounded-lg">
                         <div class="flex justify-between items-center">
                             <span class="text-lg">Change:</span>
                             <span class="text-xl font-bold text-green-600">

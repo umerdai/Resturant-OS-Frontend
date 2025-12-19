@@ -38,6 +38,13 @@ const customerForm = ref({
 });
 const selectedBranch = ref(null);
 const discountAmount = ref(0);
+const selectedPaymentMethod = ref('cash');
+
+const paymentMethods = [
+    { label: 'Cash', value: 'cash' },
+    { label: 'Card', value: 'card' },
+    { label: 'Online Transfer', value: 'mobile_payment' }
+];
 
 // Computed properties
 const filteredItems = computed(() => {
@@ -64,7 +71,9 @@ const cartSubtotal = computed(() => {
 });
 
 const cartTax = computed(() => {
-    return cartSubtotal.value * 0.05; // 5% tax
+    // 5% tax for card, 17% tax for cash and online transfer
+    const taxRate = selectedPaymentMethod.value === 'card' ? 0.05 : 0.17;
+    return cartSubtotal.value * taxRate;
 });
 
 const cartTotal = computed(() => {
@@ -170,7 +179,7 @@ const fetchBranches = async () => {
         if (response.ok) {
             const data = await response.json();
             branches.value = data.results || data;
-            
+
             // Auto-select branch from localStorage or first branch
             const savedBranchId = localStorage.getItem('branch_id');
             if (savedBranchId) {
@@ -230,7 +239,9 @@ const handlePaymentComplete = (paymentResult) => {
             tableId: null
         };
         discountAmount.value = 0;
-        
+        selectedPaymentMethod.value = 'cash';
+        selectedPaymentMethod.value = 'cash';
+
         toast.add({
             severity: 'success',
             summary: 'Payment Complete',
@@ -409,6 +420,20 @@ const getItemImage = (item) => {
 
                         <Divider />
 
+                        <!-- Customer Information -->
+                        <div class="space-y-3 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Customer Name</label>
+                                <InputText v-model="customerForm.name" placeholder="Enter customer name" class="w-full" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Customer Contact</label>
+                                <InputText v-model="customerForm.phone" placeholder="Enter contact number" class="w-full" />
+                            </div>
+                        </div>
+
+                        <Divider />
+
                         <!-- Order Total -->
                         <div class="space-y-3 mb-4">
                             <div class="flex justify-between text-lg">
@@ -416,15 +441,21 @@ const getItemImage = (item) => {
                                 <span>{{ formatCurrency(cartSubtotal) }}</span>
                             </div>
                             <div class="flex justify-between text-sm text-gray-600">
-                                <span style="color: var(--text-color)">Tax (5%):</span>
+                                <span style="color: var(--text-color)">Tax ({{ selectedPaymentMethod === 'card' ? '5%' : '17%' }}):</span>
                                 <span style="color: var(--text-color)">{{ formatCurrency(cartTax) }}</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-sm">Discount:</span>
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm">₨</span>
-                                    <InputNumber v-model="discountAmount" :min="0" :max="cartSubtotal" class="w-24" size="small" />
+                                    <InputNumber v-model="discountAmount" :min="0" :max="cartSubtotal" class="" size="small" />
                                 </div>
+                            </div>
+                     
+                      
+                            <div class="mt-3">
+                                <label class="block text-sm font-medium mb-2">Payment Method</label>
+                                <Dropdown v-model="selectedPaymentMethod" :options="paymentMethods" optionLabel="label" optionValue="value" placeholder="Select payment method" class="w-full" />
                             </div>
                             <Divider />
                             <div class="flex justify-between text-xl font-bold">
@@ -470,16 +501,17 @@ const getItemImage = (item) => {
         </Dialog>
 
         <!-- Payment Dialog -->
-        <PaymentDialog 
-            v-if="showPaymentDialog" 
-            :visible="showPaymentDialog" 
-            @update:visible="showPaymentDialog = $event" 
-            :cart="cart" 
-            :total="cartTotal" 
+        <PaymentDialog
+            v-if="showPaymentDialog"
+            :visible="showPaymentDialog"
+            @update:visible="showPaymentDialog = $event"
+            :cart="cart"
+            :total="cartTotal - discountAmount"
             :customer="customerForm"
             :branch-id="selectedBranch"
             :discount="discountAmount"
-            @payment-complete="handlePaymentComplete" 
+            :payment-method="selectedPaymentMethod"
+            @payment-complete="handlePaymentComplete"
         />
     </div>
 </template>
