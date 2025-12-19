@@ -158,13 +158,14 @@ const getStockSeverity = (item) => {
 
 // Open add dialog
 const openAddDialog = () => {
+    const branchId = localStorage.getItem('branch_id');
     formData.value = {
-        item_name: '',
-        quantity: 0,
+        name: '',
+        quantity_in_stock: 0,
         unit: 'kg',
         reorder_level: 0,
-        cost_per_unit: 0,
-        branch: null
+        unit_price: 0,
+        branch: branchId || null
     };
     showAddDialog.value = true;
 };
@@ -185,10 +186,14 @@ const addInventoryItem = async () => {
             throw new Error('Authentication token not found');
         }
 
-        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        const branchId = localStorage.getItem('branch_id');
         const requestData = {
-            ...formData.value,
-            restaurant: restaurantId
+            branch: formData.value.branch || branchId,
+            name: formData.value.name,
+            quantity_in_stock: formData.value.quantity_in_stock,
+            unit: formData.value.unit,
+            unit_price: formData.value.unit_price,
+            reorder_level: formData.value.reorder_level
         };
 
         const response = await fetch('http://localhost:8000/inventory/', {
@@ -235,10 +240,14 @@ const updateInventoryItem = async () => {
             throw new Error('Authentication token not found');
         }
 
-        const restaurantId = localStorage.getItem('restaurant_id') || localStorage.getItem('restaurantId');
+        const branchId = localStorage.getItem('branch_id');
         const requestData = {
-            ...formData.value,
-            restaurant: restaurantId
+            branch: formData.value.branch || branchId,
+            name: formData.value.name,
+            quantity_in_stock: formData.value.quantity_in_stock,
+            unit: formData.value.unit,
+            unit_price: formData.value.unit_price,
+            reorder_level: formData.value.reorder_level
         };
 
         const response = await fetch(`http://localhost:8000/inventory/${selectedItem.value.id}/`, {
@@ -445,13 +454,13 @@ onMounted(() => {
             <div class="space-y-4 mt-4">
                 <div>
                     <label for="item_name" class="block text-sm font-medium mb-2">Item Name <span class="text-red-500">*</span></label>
-                    <InputText id="item_name" v-model="formData.item_name" placeholder="Enter item name" class="w-full" required />
+                    <InputText id="item_name" v-model="formData.name" placeholder="Enter item name" class="w-full" required />
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label for="quantity" class="block text-sm font-medium mb-2">Quantity <span class="text-red-500">*</span></label>
-                        <InputNumber id="quantity" v-model="formData.quantity" placeholder="0" class="w-full" :min="0" required />
+                        <InputNumber id="quantity" v-model="formData.quantity_in_stock" placeholder="0" class="w-full" :min="0" required />
                     </div>
                     <div>
                         <label for="unit" class="block text-sm font-medium mb-2">Unit <span class="text-red-500">*</span></label>
@@ -466,7 +475,7 @@ onMounted(() => {
                     </div>
                     <div>
                         <label for="cost_per_unit" class="block text-sm font-medium mb-2">Cost per Unit</label>
-                        <InputNumber id="cost_per_unit" v-model="formData.cost_per_unit" placeholder="0" class="w-full" :min="0" mode="currency" currency="PKR" />
+                        <InputNumber id="cost_per_unit" v-model="formData.unit_price" placeholder="0" class="w-full" :min="0" mode="currency" currency="PKR" />
                     </div>
                 </div>
 
@@ -487,13 +496,13 @@ onMounted(() => {
             <div class="space-y-4 mt-4">
                 <div>
                     <label for="edit_item_name" class="block text-sm font-medium mb-2">Item Name <span class="text-red-500">*</span></label>
-                    <InputText id="edit_item_name" v-model="formData.item_name" placeholder="Enter item name" class="w-full" required />
+                    <InputText id="edit_item_name" v-model="formData.name" placeholder="Enter item name" class="w-full" required />
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label for="edit_quantity" class="block text-sm font-medium mb-2">Quantity <span class="text-red-500">*</span></label>
-                        <InputNumber id="edit_quantity" v-model="formData.quantity" placeholder="0" class="w-full" :min="0" required />
+                        <InputNumber id="edit_quantity" v-model="formData.quantity_in_stock" placeholder="0" class="w-full" :min="0" required />
                     </div>
                     <div>
                         <label for="edit_unit" class="block text-sm font-medium mb-2">Unit <span class="text-red-500">*</span></label>
@@ -508,7 +517,7 @@ onMounted(() => {
                     </div>
                     <div>
                         <label for="edit_cost_per_unit" class="block text-sm font-medium mb-2">Cost per Unit</label>
-                        <InputNumber id="edit_cost_per_unit" v-model="formData.cost_per_unit" placeholder="0" class="w-full" :min="0" mode="currency" currency="PKR" />
+                        <InputNumber id="edit_cost_per_unit" v-model="formData.unit_price" placeholder="0" class="w-full" :min="0" mode="currency" currency="PKR" />
                     </div>
                 </div>
 

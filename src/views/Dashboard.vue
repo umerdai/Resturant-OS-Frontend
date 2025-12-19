@@ -56,6 +56,10 @@ const tableStats = computed(() => {
     return stats;
 });
 
+const currentUserName = computed(() => {
+    return authStore.userName || authStore.user?.full_name || authStore.user?.name || 'User';
+});
+
 // Methods
 const getTimeGreeting = () => {
     const hour = new Date().getHours();
@@ -205,6 +209,8 @@ const fetchBranches = async () => {
 
 // Lifecycle
 onMounted(async () => {
+    // Initialize auth store to load user from localStorage
+    authStore.initializeAuth();
     await refreshDashboard();
     await fetchBranches();
     if (isRealTimeEnabled.value) {
@@ -220,7 +226,7 @@ onUnmounted(() => {
     <div class="dashboard">
         <div class="dashboard-header">
             <div>
-                <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0">Good {{ getTimeGreeting() }}, {{ authStore.user?.name || 'User' }}!</h1>
+                <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0">Good {{ getTimeGreeting() }}, {{ currentUserName }}!</h1>
                 <div class="flex flex-wrap gap-2 justify-center items-center">
                     <!-- Static button -->
                     <button class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">All Branches</button>

@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
     // Getters
     const isAuthenticated = computed(() => !!token.value && !!user.value);
     const userRole = computed(() => user.value?.role || null);
-    const userName = computed(() => user.value?.name || '');
+    const userName = computed(() => user.value?.full_name || user.value?.name || '');
     const userEmail = computed(() => user.value?.email || '');
     const canManageUsers = computed(() => ['owner', 'admin', 'manager'].includes(userRole.value));
     const canManageInventory = computed(() => ['owner', 'admin', 'manager'].includes(userRole.value));

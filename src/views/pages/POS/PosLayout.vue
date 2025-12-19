@@ -451,8 +451,7 @@ const getItemImage = (item) => {
                                     <InputNumber v-model="discountAmount" :min="0" :max="cartSubtotal" class="" size="small" />
                                 </div>
                             </div>
-                     
-                      
+
                             <div class="mt-3">
                                 <label class="block text-sm font-medium mb-2">Payment Method</label>
                                 <Dropdown v-model="selectedPaymentMethod" :options="paymentMethods" optionLabel="label" optionValue="value" placeholder="Select payment method" class="w-full" />

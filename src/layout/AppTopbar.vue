@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import AppConfigurator from './AppConfigurator.vue';
 import Popover from 'primevue/popover';
@@ -11,9 +11,23 @@ const authStore = useAuthStore();
 
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 
-// Example user data (replace with real auth/store later)
-const username = ref('John Doe');
-const role = ref('Inventory Manager');
+// Get user data from auth store
+const username = computed(() => {
+    return authStore.user?.full_name || authStore.user?.name || 'User';
+});
+
+const role = computed(() => {
+    const userRole = authStore.user?.role || '';
+    // Capitalize and format role
+    return userRole.split('_').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+});
+
+const userEmail = computed(() => {
+    return authStore.user?.email || '';
+});
+
 const branch = ref('F-7 Branch');
 const isRouteActive = (path) => {
     return route.path.startsWith(path);
@@ -23,6 +37,12 @@ const togglePopover = (event) => {
     popoverRef.value.toggle(event);
 };
 const router = useRouter();
+
+// Initialize auth on mount
+onMounted(() => {
+    authStore.initializeAuth();
+});
+
 // ✅ logout function
 const logout = () => {
     // clear tokens/sessions if needed
@@ -102,6 +122,7 @@ const logout = () => {
                         <div class="p-3 text-center">
                             <div class="font-bold text-lg"><i class="pi pi-user mr-2"></i>{{ username }}</div>
                             <div class="text-sm text-gray-600 mt-2"><i class="pi pi-briefcase mr-2"></i>{{ role }}</div>
+                            <div class="text-sm text-gray-600 mt-1"><i class="pi pi-envelope mr-2"></i>{{ userEmail }}</div>
                             <div class="text-sm text-gray-600 mt-1"><i class="pi pi-building mr-2"></i>{{ branch }}</div>
     <!-- User Actions -->
 <div class="user-actions">
